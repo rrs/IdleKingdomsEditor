@@ -1,0 +1,1397 @@
+﻿<Window x:Class="IdleKingdomsEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hx="clr-namespace:HexGridControl;assembly=HexGridControl"
+        xmlns:converters="clr-namespace:HexGridControl.Converters;assembly=HexGridControl"
+        xmlns:local="clr-namespace:IdleKingdomsEditor"       
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="Idle Kingdoms Route Editor" Width="2000" Height="2000">
+    <Window.Resources>
+        <converters:HexClipConverter x:Key="ClipConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="9" />
+        </Style>
+        
+        <Style x:Key="HighlightTile" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="CornflowerBlue"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="4"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="hx:HexItem">
+                            <Grid Name="hexBorder" Background="{TemplateBinding BorderBrush}">
+                                <Grid.Clip>
+                                    <MultiBinding Converter="{StaticResource ClipConverter}">
+                                        <Binding Path="ActualWidth" ElementName="hexBorder"/>
+                                        <Binding Path="ActualHeight" ElementName="hexBorder"/>
+                                        <Binding Path="Orientation" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    </MultiBinding>
+                                </Grid.Clip>
+
+                                <Grid Name="hexContent"                              
+                              Background="{TemplateBinding Background}"
+                              Margin="{TemplateBinding BorderThickness}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                    <Grid.Clip>
+                                        <MultiBinding Converter="{StaticResource ClipConverter}">
+                                            <Binding Path="ActualWidth" ElementName="hexContent"/>
+                                            <Binding Path="ActualHeight" ElementName="hexContent"/>
+                                            <Binding Path="Orientation" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        </MultiBinding>
+                                    </Grid.Clip>
+
+                                    <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              ClipToBounds="True"
+
+                                              Margin="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                </Grid>
+                                <Grid Name="hexOverlay" Background="GhostWhite" Opacity="0">
+                                    <Grid.Clip>
+                                        <MultiBinding Converter="{StaticResource ClipConverter}">
+                                            <Binding Path="ActualWidth" ElementName="hexBorder"/>
+                                            <Binding Path="ActualHeight" ElementName="hexBorder"/>
+                                            <Binding Path="Orientation" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        </MultiBinding>
+                                    </Grid.Clip>
+                                </Grid>
+                            </Grid>
+                        
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="hexOverlay" Property="Opacity" Value="0.6"/>
+                                <Setter Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="HexTile" BasedOn="{StaticResource HighlightTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="Grass" BasedOn="{StaticResource HexTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="#009900" />
+        </Style>
+        <Style x:Key="Forest" BasedOn="{StaticResource HexTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="#005500" />
+        </Style>
+        <Style x:Key="Shrine" BasedOn="{StaticResource HexTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="#888888" />
+        </Style>
+        <Style x:Key="Water" BasedOn="{StaticResource HexTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="#0033bb" />
+        </Style>
+        <Style x:Key="Mountain" BasedOn="{StaticResource HexTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="#553311" />
+        </Style>
+        <Style x:Key="Sand" BasedOn="{StaticResource HexTile}" TargetType="{x:Type hx:HexItem}">
+            <Setter Property="Background" Value="#886622" />
+        </Style>
+        <Style BasedOn="{StaticResource Grass}" TargetType="{x:Type hx:HexItem}">
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+            <Label>Width</Label>
+            <TextBox Name="WidthTextBox" Width="80" TextChanged="WidthTextBox_TextChanged">2000</TextBox>
+            <Label>Height</Label>
+            <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged">1800</TextBox>
+            <Label DockPanel.Dock="Right">Selected</Label>
+            <TextBlock Name="Info"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+        </DockPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid Name="hexGrid" Height="1800" Width="2000">
+                <hx:HexList Name="HexList" Orientation="Vertical" RowCount="39" ColumnCount="39" Padding="10" SelectionMode="Multiple" SelectionChanged="HexList_SelectionChanged">
+                    <hx:HexItem Grid.Row="0" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="24" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="0" Grid.Column="29" />
+
+                    <hx:HexItem Grid.Row="1" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="14" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="18" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="21" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="22" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="1" Grid.Column="29" />
+
+                    <hx:HexItem Grid.Row="2" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="13" Style="{StaticResource Shrine}">
+                        <TextBlock>F2, P2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="2" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="18" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="21" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="24" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="2" Grid.Column="30" />
+
+                    <hx:HexItem Grid.Row="3" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="21" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="29" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="3" Grid.Column="30" />
+
+                    <hx:HexItem Grid.Row="4" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="21" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="24" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="25" Style="{StaticResource Shrine}">
+                        <TextBlock>F3, P6</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="4" Grid.Column="26" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="30" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="4" Grid.Column="31" />
+
+                    <hx:HexItem Grid.Row="5" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="16" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="26" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="5" Grid.Column="31" />
+
+                    <hx:HexItem Grid.Row="6" Grid.Column="7" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="10" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="11" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="14" Style="{StaticResource Shrine}">
+                        <TextBlock>SC4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="6" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="31" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="6" Grid.Column="32" />
+
+                    <hx:HexItem Grid.Row="7" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="12" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="21" Style="{StaticResource Shrine}">
+                        <TextBlock>AC2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="7" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="24" Style="{StaticResource Shrine}">
+                        <TextBlock>FC2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="7" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="7" Grid.Column="32" />
+
+                    <hx:HexItem Grid.Row="8" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="9" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="10" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="19" Style="{StaticResource Shrine}">
+                        <TextBlock>F2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="8" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="25" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="31" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="8" Grid.Column="33" Style="{StaticResource Forest}" />
+
+                    <hx:HexItem Grid.Row="9" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="15" Style="{StaticResource Shrine}">
+                        <TextBlock>F2,P4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="9" Grid.Column="16" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="9" Grid.Column="17" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="9" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="20" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="9" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="22" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="6">F1.5,P1.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="9" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="24" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="9" Grid.Column="25" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="9" Grid.Column="26" Style="{StaticResource Shrine}">
+                        <TextBlock>FH3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="9" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="9" Grid.Column="33" />
+
+                    <hx:HexItem Grid.Row="10" Grid.Column="5" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="7" Style="{StaticResource Shrine}">
+                        <TextBlock>F2,P6</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="10" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="10" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="11" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="13" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="21" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="29" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="10" Grid.Column="33" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="10" Grid.Column="34" />
+
+                    <hx:HexItem Grid.Row="11" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="15" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="11" Grid.Column="16" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="11" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="18" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="6">C1.5,P2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="11" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="22" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="11" Grid.Column="23" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="11" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="27" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">AC2,P3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="11" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="11" Grid.Column="34" Style="{StaticResource Forest}"/>
+
+                    <hx:HexItem Grid.Row="12" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="11" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F2,P4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="12" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="14" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">S3,P2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="12" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="25" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F2,P1.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="12" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="31" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">P5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="12" Grid.Column="32" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">SC3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="12" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="34" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="12" Grid.Column="35" />
+
+                    <hx:HexItem Grid.Row="13" Grid.Column="3" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="10" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="14" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="20" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="21" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="13" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="30" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="34" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="13" Grid.Column="35" />
+
+                    <hx:HexItem Grid.Row="14" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="9" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="12" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="17" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="19" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="20" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="21" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="24" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">SC5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="14" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="28" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="14" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="32" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="14" Grid.Column="36" />
+
+                    <hx:HexItem Grid.Row="15" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="10" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="17" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="18" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="19" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="20" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="21" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="26" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="15" Grid.Column="36" Style="{StaticResource Forest}" />
+
+                    <hx:HexItem Grid.Row="16" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="5" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="6" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="11" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="14" Style="{StaticResource Shrine}">
+                        <TextBlock>SC4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="16" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="17" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="18" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="21" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="22" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="25" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="26" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="35" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="36" />
+                    <hx:HexItem Grid.Row="16" Grid.Column="37" />
+
+                    <hx:HexItem Grid.Row="17" Grid.Column="1" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="3" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="5" Style="{StaticResource Shrine}">
+                        <TextBlock>SC3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="17" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="12" Style="{StaticResource Shrine}">
+                        <TextBlock>S3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="17" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="16" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="17" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="18" Style="{StaticResource Shrine}">
+                        <TextBlock>FS</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="17" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="20" Style="{StaticResource Shrine}">
+                        <TextBlock>F,WC</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="17" Grid.Column="21" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="23" Style="{StaticResource Shrine}">
+                        <TextBlock>SP</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="17" Grid.Column="24" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="25" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="26" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="36" />
+                    <hx:HexItem Grid.Row="17" Grid.Column="37" />
+
+                    <hx:HexItem Grid.Row="18" Grid.Column="1" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="5" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F2,P2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="18" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="10" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="11" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F2,P2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="18" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="17" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="18" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="20" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="22" Style="{StaticResource Shrine}">
+                        <TextBlock>H</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="18" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="24" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="25" Style="{StaticResource Water}"/>
+                    <hx:HexItem Grid.Row="18" Grid.Column="26" Style="{StaticResource Water}"/>
+                    <hx:HexItem Grid.Row="18" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="28" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="29" Style="{StaticResource Shrine}">
+                        <TextBlock>SPC2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="18" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="35" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="36" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="37" />
+                    <hx:HexItem Grid.Row="18" Grid.Column="38" />
+
+                    <hx:HexItem Grid.Row="19" Grid.Column="0" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="1" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="6" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="16" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="17" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="19" Style="{StaticResource Shrine}"/>
+                    <hx:HexItem Grid.Row="19" Grid.Column="20" Style="{StaticResource Sand}"/>
+                    <hx:HexItem Grid.Row="19" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="24" Style="{StaticResource Shrine}">
+                        <TextBlock>FH4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="19" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="29" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="34" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="36" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="37" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="19" Grid.Column="38" />
+
+                    <hx:HexItem Grid.Row="20" Grid.Column="1" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="7" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="17" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="18" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="19" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="20" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="21" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="25" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="26" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="29" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="32" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="34" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="36" Style="{StaticResource Mountain}" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="37" />
+                    <hx:HexItem Grid.Row="20" Grid.Column="38" />
+
+                    <hx:HexItem Grid.Row="21" Grid.Column="1" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="4" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="10" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="11" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="14" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="17" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="18" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="19" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="20" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="21" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="22" Style="{StaticResource Shrine}">
+                        <TextBlock>SH</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="21" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="24" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="26" Style="{StaticResource Shrine}">
+                        <TextBlock>LIB</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="21" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="33" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="36" />
+                    <hx:HexItem Grid.Row="21" Grid.Column="37" Style="{StaticResource Forest}" />
+
+                    <hx:HexItem Grid.Row="22" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="3" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="6" Style="{StaticResource Shrine}">
+                        <TextBlock>F2,P8</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="22" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="12" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="18" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="20" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="21" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="22" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="29" Style="{StaticResource Shrine}">
+                        <TextBlock>P2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="22" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="32" Style="{StaticResource Shrine}">
+                        <TextBlock>W3,P3</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="22" Grid.Column="33" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="34" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="35" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="36" />
+                    <hx:HexItem Grid.Row="22" Grid.Column="37" Style="{StaticResource Forest}" />
+
+                    <hx:HexItem Grid.Row="23" Grid.Column="2" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="5" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="6" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="9" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="14" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="6">F2,C2,P2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="23" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="19" Style="{StaticResource Shrine}">
+                        <TextBlock>F2,P4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="23" Grid.Column="20" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="21" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="22" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="26" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="23" Grid.Column="36" />
+
+                    <hx:HexItem Grid.Row="24" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="8" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="24" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="13" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="24" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="21" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="24" Grid.Column="22" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="23" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="24" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="24" Grid.Column="25" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="24" Grid.Column="26" Style="{StaticResource Shrine}">
+                        <TextBlock>SC2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="24" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="29" Style="{StaticResource Shrine}">
+                        <TextBlock>F2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="24" Grid.Column="30" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="24" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="35" />
+                    <hx:HexItem Grid.Row="24" Grid.Column="36" Style="{StaticResource Forest}"/>
+
+                    <hx:HexItem Grid.Row="25" Grid.Column="3" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="6" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="9" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="12" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="17" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="21" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="22" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="23" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="24" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="25" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="26" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="31" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="25" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="25" Grid.Column="35" />
+
+                    <hx:HexItem Grid.Row="26" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="5" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="6" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="21" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="23" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="24" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="25" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="26" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="29" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="31" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="26" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="34" />
+                    <hx:HexItem Grid.Row="26" Grid.Column="35" />
+
+                    <hx:HexItem Grid.Row="27" Grid.Column="4" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="5" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="27" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="14" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="17" Style="{StaticResource Shrine}">
+                        <TextBlock>FSC2</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="27" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="23" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="27" Grid.Column="24" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="27" Grid.Column="25" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="26" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="27" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="28" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="30" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="27" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="27" Grid.Column="33" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F3,P2.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="27" Grid.Column="34" Style="{StaticResource Forest}"/>
+
+                    <hx:HexItem Grid.Row="28" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="6" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="28" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="14" Style="{StaticResource Shrine}">
+                        <TextBlock>F2,P4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="28" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="21" Style="{StaticResource Shrine}">
+                        <TextBlock>F3,P4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="28" Grid.Column="22" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="28" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="24" Style="{StaticResource Forest}"/>
+                    <hx:HexItem Grid.Row="28" Grid.Column="25" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="26" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="27" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="28" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="29" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="33" />
+                    <hx:HexItem Grid.Row="28" Grid.Column="34" />
+
+                    <hx:HexItem Grid.Row="29" Grid.Column="5" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="6" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="9" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="14" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="24" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="25" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="26" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="27" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="28" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="29" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="31" Style="{StaticResource Shrine}">
+                        <TextBlock>P4</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="29" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="29" Grid.Column="33" Style="{StaticResource Forest}" />
+
+                    <hx:HexItem Grid.Row="30" Grid.Column="6" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="12" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="18" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="20" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="25" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="26" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="27" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="28" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="29" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="30" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="32" />
+                    <hx:HexItem Grid.Row="30" Grid.Column="33" />
+
+                    <hx:HexItem Grid.Row="31" Grid.Column="6" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="7" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="16" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="18" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="25" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="26" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="27" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="28" Style="{StaticResource Water}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="29" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="31" Grid.Column="32" />
+
+                    <hx:HexItem Grid.Row="32" Grid.Column="7" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="9" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="15" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="26" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="27" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="28" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="29" Style="{StaticResource Sand}" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="31" />
+                    <hx:HexItem Grid.Row="32" Grid.Column="32" />
+
+                    <hx:HexItem Grid.Row="33" Grid.Column="7" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="8" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="24" Style="{StaticResource Shrine}">
+                        <TextBlock>F6</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="33" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="26" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="33" Grid.Column="31" />
+
+                    <hx:HexItem Grid.Row="34" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="14" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="16" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="21" Style="{StaticResource Shrine}">
+                        <TextBlock>P6</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="34" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="25" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="28" Style="{StaticResource Shrine}">
+                        <TextBlock>F2,P6</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="34" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="30" />
+                    <hx:HexItem Grid.Row="34" Grid.Column="31" Style="{StaticResource Forest}" />
+
+                    <hx:HexItem Grid.Row="35" Grid.Column="8" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="27" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="28" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="35" Grid.Column="30" />
+
+                    <hx:HexItem Grid.Row="36" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="13" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="14" Style="{StaticResource Shrine}">
+                        <TextBlock FontSize="8">F2,P3.5</TextBlock>
+                    </hx:HexItem>
+                    <hx:HexItem Grid.Row="36" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="22" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="29" />
+                    <hx:HexItem Grid.Row="36" Grid.Column="30" />
+
+                    <hx:HexItem Grid.Row="37" Grid.Column="9" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="12" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="19" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="20" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="22" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="23" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="37" Grid.Column="29" />
+
+                    <hx:HexItem Grid.Row="38" Grid.Column="10" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="11" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="12" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="13" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="14" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="15" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="16" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="17" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="18" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="19" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="20" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="21" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="22" Style="{StaticResource Forest}" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="23" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="24" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="25" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="26" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="27" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="28" />
+                    <hx:HexItem Grid.Row="38" Grid.Column="29" />
+
+
+                </hx:HexList>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+    
+</Window>
