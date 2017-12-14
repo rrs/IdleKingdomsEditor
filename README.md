@@ -1,17 +1,5 @@
-**HexGridControl** project includes:
+**IdleKingdomsEditor**
 
-**HexItem**: hexagon-shaped ContentControl
+Simple editor to play around with routes
 
-![](https://github.com/AlexanderSharykin/HexGrid/blob/master/Screenshots/HexItem.png)
-
-**HexGrid**: Panel which arranges child elements in a honeycomb pattern
-
-![](https://github.com/AlexanderSharykin/HexGrid/blob/master/Screenshots/HexGrid.png)
-
-**HexList**: selector ItemsControl which displays items in HexItem container on a HexGrid panel
-
-![](https://github.com/AlexanderSharykin/HexGrid/blob/master/Screenshots/HexList.png)
-
-**HexGridHelpers** project provides useful funtionality for hexagonal boards.
-
-![](https://github.com/AlexanderSharykin/HexGrid/blob/master/Screenshots/HexDirections.png)
+build folder contains the build output of the IdleKingdomdsEditor project
