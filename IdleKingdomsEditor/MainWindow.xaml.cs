@@ -26,7 +26,25 @@ namespace IdleKingdomsEditor
 
         private void HexList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Info.Text = HexList.SelectedItems.Count.ToString();
+            int total = 0;
+            int forests = 0;
+            double prestige = 1;
+
+            foreach(var hexItem in HexList.SelectedItems)
+            {
+                total++;
+
+                var o = (DependencyObject)hexItem;
+                var type = TileHelper.GetTileType(o);
+                if (type == TileType.Forest) forests++;
+                var multiplier = TileHelper.GetPrestigeMultiplier(o);
+                if (multiplier > 1) prestige *= multiplier;
+            }
+
+            SelectedInfo.Text = total.ToString();
+            ForestInfo.Text = forests.ToString();
+            PrestigeInfo.Text = prestige.ToString();
+            
         }
 
         private void WidthTextBox_TextChanged(object sender, TextChangedEventArgs e)
