@@ -74,13 +74,42 @@ namespace IdleKingdomsEditor
 
             SelectedInfo.Text = total.ToString();
             ForestInfo.Text = forests.ToString();
-            PrestigeInfo.Text = $"{prestige:N}";
-            FoodInfo.Text = $"{food:N}";
-            FoodCartInfo.Text = $"{foodCart:N}";
-            WoodInfo.Text = $"{wood:N}";
-            WoodCartInfo.Text = $"{woodCart:N}";
-            ScienceInfo.Text = $"{science:N}";
-            ScienceCartInfo.Text = $"{scienceCart:N}";
+            PrestigeInfo.Text = FormatNumber(prestige);
+            FoodInfo.Text = FormatNumber(food);
+            FoodCartInfo.Text = FormatNumber(foodCart);
+            WoodInfo.Text = FormatNumber(wood);
+            WoodCartInfo.Text = FormatNumber(woodCart);
+            ScienceInfo.Text = FormatNumber(science);
+            ScienceCartInfo.Text = FormatNumber(scienceCart);
+
+            DependencyObject selected = null;
+            if (e.AddedItems.Count > 0)
+            {
+                selected = (DependencyObject)e.AddedItems[0];
+            }
+
+            if (selected == null) return;
+
+            var currentPrestige = TileHelper.GetPrestigeMultiplier(selected);
+            var currentFood = TileHelper.GetFoodMultiplier(selected);
+            var currentFoodCart = TileHelper.GetFoodCartMultiplier(selected);
+            var currentWood = TileHelper.GetWoodMultiplier(selected);
+            var currentWoodCart = TileHelper.GetWoodCartMultiplier(selected);
+            var currentScience = TileHelper.GetScienceMultiplier(selected);
+            var currentAllCart = TileHelper.GetAllCartMultiplier(selected);
+
+            CurrentPrestige.Text = currentPrestige > 0 ? FormatNumber(currentPrestige) : null;
+            CurrentFood.Text = currentFood > 0 ? FormatNumber(currentFood) : null;
+            CurrentFoodCart.Text = currentFoodCart > 0 ? FormatNumber(currentFoodCart) : null;
+            CurrentWood.Text = currentWood > 0 ? FormatNumber(currentWood) : null;
+            CurrentWoodCart.Text = currentWoodCart > 0 ? FormatNumber(currentWoodCart) : null;
+            CurrentScience.Text = currentScience > 0 ? FormatNumber(currentScience) : null;
+            CurrentAllCart.Text = currentAllCart > 0 ? FormatNumber(currentAllCart) : null;
+        }
+
+        private string FormatNumber(double n)
+        {
+            return $"{n:###,###,###,###,###,###,###,###,###.##}";
         }
 
         private void WidthTextBox_TextChanged(object sender, TextChangedEventArgs e)
