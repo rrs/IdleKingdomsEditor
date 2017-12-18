@@ -100,16 +100,66 @@
     </Window.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-            <Label>Width</Label>
-            <TextBox Name="WidthTextBox" Width="80" TextChanged="WidthTextBox_TextChanged">2000</TextBox>
-            <Label>Height</Label>
-            <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged">1800</TextBox>
-            <Label DockPanel.Dock="Right">Prestige Multiplier</Label>
-            <TextBlock Name="PrestigeInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
-            <Label DockPanel.Dock="Right">Forest</Label>
-            <TextBlock Name="ForestInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
-            <Label DockPanel.Dock="Right">Selected</Label>
-            <TextBlock Name="SelectedInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+            <StackPanel>
+                <DockPanel>
+                    <Label>Width</Label>
+                    <TextBox Name="WidthTextBox" Width="80" TextChanged="WidthTextBox_TextChanged">2000</TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label>Height</Label>
+                    <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged">1800</TextBox>
+                </DockPanel>
+            </StackPanel>
+            <Border DockPanel.Dock="Right" BorderBrush="Gray" BorderThickness="1">
+                <StackPanel>
+                    <Label>Prestige Multiplier</Label>
+                    <TextBlock Name="PrestigeInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </StackPanel>
+            </Border>
+            <StackPanel DockPanel.Dock="Right">
+                <DockPanel>
+                    <Label>Science Multiplier</Label>
+                    <TextBlock Name="ScienceInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <Label>Science Cart Multiplier</Label>
+                    <TextBlock Name="ScienceCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Right">
+                <DockPanel>
+                    <Label>Wood Multiplier</Label>
+                    <TextBlock Name="WoodInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <Label>Wood Cart Multiplier</Label>
+                    <TextBlock Name="WoodCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Right">
+                <DockPanel>
+                    <Label >Food Multiplier</Label>
+                    <TextBlock Name="FoodInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <Label>Food Cart Multiplier</Label>
+                    <TextBlock Name="FoodCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Right">
+                <DockPanel>
+                    <Label>Selected</Label>
+                    <TextBlock Name="SelectedInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <Label>Forest</Label>
+                    <TextBlock Name="ForestInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+            </StackPanel>
+
+
+
         </DockPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Grid Name="hexGrid" Height="1800" Width="2000">
@@ -161,7 +211,7 @@
                     <hx:HexItem Grid.Row="2" Grid.Column="10" />
                     <hx:HexItem Grid.Row="2" Grid.Column="11" />
                     <hx:HexItem Grid.Row="2" Grid.Column="12" />
-                    <hx:HexItem Grid.Row="2" Grid.Column="13" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2">
+                    <hx:HexItem Grid.Row="2" Grid.Column="13" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="2" Grid.Column="14" />
@@ -223,7 +273,7 @@
                     <hx:HexItem Grid.Row="4" Grid.Column="22" />
                     <hx:HexItem Grid.Row="4" Grid.Column="23" />
                     <hx:HexItem Grid.Row="4" Grid.Column="24" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="4" Grid.Column="25" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="6">
+                    <hx:HexItem Grid.Row="4" Grid.Column="25" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="6" local:TileHelper.FoodMultiplier="3">
                         <TextBlock>F3,P6</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="4" Grid.Column="26" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
@@ -266,8 +316,8 @@
                     <hx:HexItem Grid.Row="6" Grid.Column="11" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="6" Grid.Column="12" />
                     <hx:HexItem Grid.Row="6" Grid.Column="13" />
-                    <hx:HexItem Grid.Row="6" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>SC4</TextBlock>
+                    <hx:HexItem Grid.Row="6" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="4">
+                        <TextBlock>FC4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="6" Grid.Column="15" />
                     <hx:HexItem Grid.Row="6" Grid.Column="16" />
@@ -303,13 +353,13 @@
                     <hx:HexItem Grid.Row="7" Grid.Column="18" />
                     <hx:HexItem Grid.Row="7" Grid.Column="19" />
                     <hx:HexItem Grid.Row="7" Grid.Column="20" />
-                    <hx:HexItem Grid.Row="7" Grid.Column="21" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="7" Grid.Column="21" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.AllCartMultiplier="2">
                         <TextBlock>AC2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="7" Grid.Column="22" />
                     <hx:HexItem Grid.Row="7" Grid.Column="23" />
-                    <hx:HexItem Grid.Row="7" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>FC2</TextBlock>
+                    <hx:HexItem Grid.Row="7" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="3">
+                        <TextBlock>FC3</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="7" Grid.Column="25" />
                     <hx:HexItem Grid.Row="7" Grid.Column="26" />
@@ -333,8 +383,8 @@
                     <hx:HexItem Grid.Row="8" Grid.Column="16" />
                     <hx:HexItem Grid.Row="8" Grid.Column="17" />
                     <hx:HexItem Grid.Row="8" Grid.Column="18" />
-                    <hx:HexItem Grid.Row="8" Grid.Column="19" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>F2</TextBlock>
+                    <hx:HexItem Grid.Row="8" Grid.Column="19" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.WoodMultiplier="2">
+                        <TextBlock>W2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="8" Grid.Column="20" />
                     <hx:HexItem Grid.Row="8" Grid.Column="21" />
@@ -361,7 +411,7 @@
                     <hx:HexItem Grid.Row="9" Grid.Column="12" />
                     <hx:HexItem Grid.Row="9" Grid.Column="13" />
                     <hx:HexItem Grid.Row="9" Grid.Column="14" />
-                    <hx:HexItem Grid.Row="9" Grid.Column="15" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4">
+                    <hx:HexItem Grid.Row="9" Grid.Column="15" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="9" Grid.Column="16" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
@@ -370,13 +420,13 @@
                     <hx:HexItem Grid.Row="9" Grid.Column="19" />
                     <hx:HexItem Grid.Row="9" Grid.Column="20" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="9" Grid.Column="21" />
-                    <hx:HexItem Grid.Row="9" Grid.Column="22" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="1.5">
+                    <hx:HexItem Grid.Row="9" Grid.Column="22" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="1.5" local:TileHelper.FoodMultiplier="1.5">
                         <TextBlock FontSize="6">F1.5,P1.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="9" Grid.Column="23" />
                     <hx:HexItem Grid.Row="9" Grid.Column="24" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="9" Grid.Column="25" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
-                    <hx:HexItem Grid.Row="9" Grid.Column="26" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="9" Grid.Column="26" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.ForagingHutMultiplier="3">
                         <TextBlock>FH3</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="9" Grid.Column="27" />
@@ -389,7 +439,7 @@
 
                     <hx:HexItem Grid.Row="10" Grid.Column="5" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="10" Grid.Column="6" />
-                    <hx:HexItem Grid.Row="10" Grid.Column="7" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="6">
+                    <hx:HexItem Grid.Row="10" Grid.Column="7" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="6" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P6</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="10" Grid.Column="8" />
@@ -434,8 +484,8 @@
                     <hx:HexItem Grid.Row="11" Grid.Column="15" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="11" Grid.Column="16" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="11" Grid.Column="17" />
-                    <hx:HexItem Grid.Row="11" Grid.Column="18" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5">
-                        <TextBlock FontSize="6">C1.5,P2.5</TextBlock>
+                    <hx:HexItem Grid.Row="11" Grid.Column="18" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.AllCartMultiplier="1.5">
+                        <TextBlock FontSize="6">AC1.5,P2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="11" Grid.Column="19" />
                     <hx:HexItem Grid.Row="11" Grid.Column="20" />
@@ -445,8 +495,8 @@
                     <hx:HexItem Grid.Row="11" Grid.Column="24" />
                     <hx:HexItem Grid.Row="11" Grid.Column="25" />
                     <hx:HexItem Grid.Row="11" Grid.Column="26" />
-                    <hx:HexItem Grid.Row="11" Grid.Column="27" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="3">
-                        <TextBlock FontSize="8">AC2,P3</TextBlock>
+                    <hx:HexItem Grid.Row="11" Grid.Column="27" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2" local:TileHelper.AllCartMultiplier="2">
+                        <TextBlock FontSize="8">AC2,P2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="11" Grid.Column="28" />
                     <hx:HexItem Grid.Row="11" Grid.Column="29" />
@@ -463,12 +513,12 @@
                     <hx:HexItem Grid.Row="12" Grid.Column="8" />
                     <hx:HexItem Grid.Row="12" Grid.Column="9" />
                     <hx:HexItem Grid.Row="12" Grid.Column="10" />
-                    <hx:HexItem Grid.Row="12" Grid.Column="11" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4">
+                    <hx:HexItem Grid.Row="12" Grid.Column="11" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4" local:TileHelper.FoodMultiplier="2">
                         <TextBlock FontSize="8">F2,P4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="12" Grid.Column="12" />
                     <hx:HexItem Grid.Row="12" Grid.Column="13" />
-                    <hx:HexItem Grid.Row="12" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5">
+                    <hx:HexItem Grid.Row="12" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.ScienceMultiplier="2">
                         <TextBlock FontSize="8">S3,P2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="12" Grid.Column="15" />
@@ -481,7 +531,7 @@
                     <hx:HexItem Grid.Row="12" Grid.Column="22" />
                     <hx:HexItem Grid.Row="12" Grid.Column="23" />
                     <hx:HexItem Grid.Row="12" Grid.Column="24" />
-                    <hx:HexItem Grid.Row="12" Grid.Column="25" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="1.5">
+                    <hx:HexItem Grid.Row="12" Grid.Column="25" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="1.5" local:TileHelper.FoodMultiplier="2">
                         <TextBlock FontSize="8">F2,P1.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="12" Grid.Column="26" />
@@ -492,8 +542,8 @@
                     <hx:HexItem Grid.Row="12" Grid.Column="31" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="5">
                         <TextBlock FontSize="8">P5</TextBlock>
                     </hx:HexItem>
-                    <hx:HexItem Grid.Row="12" Grid.Column="32" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock FontSize="8">SC3</TextBlock>
+                    <hx:HexItem Grid.Row="12" Grid.Column="32" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="3">
+                        <TextBlock FontSize="8">FC3</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="12" Grid.Column="33" />
                     <hx:HexItem Grid.Row="12" Grid.Column="34" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
@@ -517,7 +567,7 @@
                     <hx:HexItem Grid.Row="13" Grid.Column="18" />
                     <hx:HexItem Grid.Row="13" Grid.Column="19" />
                     <hx:HexItem Grid.Row="13" Grid.Column="20" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="13" Grid.Column="21" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="13" Grid.Column="21" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodMultiplier="2.5">
                         <TextBlock FontSize="8">F2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="13" Grid.Column="22" />
@@ -556,13 +606,13 @@
                     <hx:HexItem Grid.Row="14" Grid.Column="21" Style="{StaticResource Water}" local:TileHelper.TileType="Water" />
                     <hx:HexItem Grid.Row="14" Grid.Column="22" />
                     <hx:HexItem Grid.Row="14" Grid.Column="23" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="14" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock FontSize="8">SC5</TextBlock>
+                    <hx:HexItem Grid.Row="14" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="5">
+                        <TextBlock FontSize="8">FC5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="14" Grid.Column="25" />
                     <hx:HexItem Grid.Row="14" Grid.Column="26" />
                     <hx:HexItem Grid.Row="14" Grid.Column="27" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="14" Grid.Column="28" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="14" Grid.Column="28" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodMultiplier="3">
                         <TextBlock FontSize="8">F3</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="14" Grid.Column="29" />
@@ -622,8 +672,8 @@
                     <hx:HexItem Grid.Row="16" Grid.Column="11" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="16" Grid.Column="12" />
                     <hx:HexItem Grid.Row="16" Grid.Column="13" />
-                    <hx:HexItem Grid.Row="16" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>SC4</TextBlock>
+                    <hx:HexItem Grid.Row="16" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="4">
+                        <TextBlock>FC4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="16" Grid.Column="15" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="16" Grid.Column="16" />
@@ -653,8 +703,8 @@
                     <hx:HexItem Grid.Row="17" Grid.Column="2" />
                     <hx:HexItem Grid.Row="17" Grid.Column="3" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="17" Grid.Column="4" />
-                    <hx:HexItem Grid.Row="17" Grid.Column="5" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>SC3</TextBlock>
+                    <hx:HexItem Grid.Row="17" Grid.Column="5" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="3">
+                        <TextBlock>FC3</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="17" Grid.Column="6" />
                     <hx:HexItem Grid.Row="17" Grid.Column="7" />
@@ -662,8 +712,8 @@
                     <hx:HexItem Grid.Row="17" Grid.Column="9" />
                     <hx:HexItem Grid.Row="17" Grid.Column="10" />
                     <hx:HexItem Grid.Row="17" Grid.Column="11" />
-                    <hx:HexItem Grid.Row="17" Grid.Column="12" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>S3</TextBlock>
+                    <hx:HexItem Grid.Row="17" Grid.Column="12" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.ScienceMultiplier="2">
+                        <TextBlock>S2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="17" Grid.Column="13" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="17" Grid.Column="14" />
@@ -701,7 +751,7 @@
                     <hx:HexItem Grid.Row="18" Grid.Column="2" />
                     <hx:HexItem Grid.Row="18" Grid.Column="3" />
                     <hx:HexItem Grid.Row="18" Grid.Column="4" />
-                    <hx:HexItem Grid.Row="18" Grid.Column="5" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5">
+                    <hx:HexItem Grid.Row="18" Grid.Column="5" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.FoodMultiplier="2">
                         <TextBlock FontSize="8">F2,P2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="18" Grid.Column="6" />
@@ -709,7 +759,7 @@
                     <hx:HexItem Grid.Row="18" Grid.Column="8" />
                     <hx:HexItem Grid.Row="18" Grid.Column="9" />
                     <hx:HexItem Grid.Row="18" Grid.Column="10" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="18" Grid.Column="11" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5">
+                    <hx:HexItem Grid.Row="18" Grid.Column="11" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.FoodMultiplier="2">
                         <TextBlock FontSize="8">F2,P2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="18" Grid.Column="12" />
@@ -731,8 +781,8 @@
                     <hx:HexItem Grid.Row="18" Grid.Column="26" Style="{StaticResource Water}" local:TileHelper.TileType="Water"/>
                     <hx:HexItem Grid.Row="18" Grid.Column="27" />
                     <hx:HexItem Grid.Row="18" Grid.Column="28" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="18" Grid.Column="29" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>SPC2</TextBlock>
+                    <hx:HexItem Grid.Row="18" Grid.Column="29" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.WoodCartMultiplier="2">
+                        <TextBlock>WC2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="18" Grid.Column="30" />
                     <hx:HexItem Grid.Row="18" Grid.Column="31" />
@@ -768,7 +818,7 @@
                     <hx:HexItem Grid.Row="19" Grid.Column="21" />
                     <hx:HexItem Grid.Row="19" Grid.Column="22" />
                     <hx:HexItem Grid.Row="19" Grid.Column="23" />
-                    <hx:HexItem Grid.Row="19" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="19" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.ForagingHutMultiplier="4">
                         <TextBlock>FH4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="19" Grid.Column="25" />
@@ -871,7 +921,7 @@
                     <hx:HexItem Grid.Row="22" Grid.Column="3" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="22" Grid.Column="4" />
                     <hx:HexItem Grid.Row="22" Grid.Column="5" />
-                    <hx:HexItem Grid.Row="22" Grid.Column="6" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="8">
+                    <hx:HexItem Grid.Row="22" Grid.Column="6" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="8" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P8</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="22" Grid.Column="7" />
@@ -901,7 +951,7 @@
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="22" Grid.Column="30" />
                     <hx:HexItem Grid.Row="22" Grid.Column="31" />
-                    <hx:HexItem Grid.Row="22" Grid.Column="32" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="3">
+                    <hx:HexItem Grid.Row="22" Grid.Column="32" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="3" local:TileHelper.WoodMultiplier="2">
                         <TextBlock>W3,P3</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="22" Grid.Column="33" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
@@ -922,14 +972,14 @@
                     <hx:HexItem Grid.Row="23" Grid.Column="11" />
                     <hx:HexItem Grid.Row="23" Grid.Column="12" />
                     <hx:HexItem Grid.Row="23" Grid.Column="13" />
-                    <hx:HexItem Grid.Row="23" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5">
-                        <TextBlock FontSize="6">F2,C2,P2.5</TextBlock>
+                    <hx:HexItem Grid.Row="23" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.WoodMultiplier="2" local:TileHelper.AllCartMultiplier="2">
+                        <TextBlock FontSize="6">W2,AC2,P2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="23" Grid.Column="15" />
                     <hx:HexItem Grid.Row="23" Grid.Column="16" />
                     <hx:HexItem Grid.Row="23" Grid.Column="17" />
                     <hx:HexItem Grid.Row="23" Grid.Column="18" />
-                    <hx:HexItem Grid.Row="23" Grid.Column="19" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4">
+                    <hx:HexItem Grid.Row="23" Grid.Column="19" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="23" Grid.Column="20" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
@@ -973,12 +1023,12 @@
                     <hx:HexItem Grid.Row="24" Grid.Column="23" Style="{StaticResource Water}" local:TileHelper.TileType="Water" />
                     <hx:HexItem Grid.Row="24" Grid.Column="24" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="24" Grid.Column="25" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
-                    <hx:HexItem Grid.Row="24" Grid.Column="26" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>SC2</TextBlock>
+                    <hx:HexItem Grid.Row="24" Grid.Column="26" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="2">
+                        <TextBlock>FC2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="24" Grid.Column="27" />
                     <hx:HexItem Grid.Row="24" Grid.Column="28" />
-                    <hx:HexItem Grid.Row="24" Grid.Column="29" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="24" Grid.Column="29" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="24" Grid.Column="30" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
@@ -1069,8 +1119,8 @@
                     <hx:HexItem Grid.Row="27" Grid.Column="14" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="27" Grid.Column="15" />
                     <hx:HexItem Grid.Row="27" Grid.Column="16" />
-                    <hx:HexItem Grid.Row="27" Grid.Column="17" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
-                        <TextBlock>FSC2</TextBlock>
+                    <hx:HexItem Grid.Row="27" Grid.Column="17" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodCartMultiplier="2">
+                        <TextBlock>FC2</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="27" Grid.Column="18" />
                     <hx:HexItem Grid.Row="27" Grid.Column="19" />
@@ -1087,7 +1137,7 @@
                     <hx:HexItem Grid.Row="27" Grid.Column="30" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
                     <hx:HexItem Grid.Row="27" Grid.Column="31" />
                     <hx:HexItem Grid.Row="27" Grid.Column="32" />
-                    <hx:HexItem Grid.Row="27" Grid.Column="33" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5">
+                    <hx:HexItem Grid.Row="27" Grid.Column="33" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.FoodMultiplier="3">
                         <TextBlock FontSize="8">F3,P2.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="27" Grid.Column="34" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
@@ -1101,7 +1151,7 @@
                     <hx:HexItem Grid.Row="28" Grid.Column="11" />
                     <hx:HexItem Grid.Row="28" Grid.Column="12" />
                     <hx:HexItem Grid.Row="28" Grid.Column="13" />
-                    <hx:HexItem Grid.Row="28" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4">
+                    <hx:HexItem Grid.Row="28" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="28" Grid.Column="15" />
@@ -1110,7 +1160,7 @@
                     <hx:HexItem Grid.Row="28" Grid.Column="18" />
                     <hx:HexItem Grid.Row="28" Grid.Column="19" />
                     <hx:HexItem Grid.Row="28" Grid.Column="20" />
-                    <hx:HexItem Grid.Row="28" Grid.Column="21" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4">
+                    <hx:HexItem Grid.Row="28" Grid.Column="21" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="4" local:TileHelper.FoodMultiplier="3">
                         <TextBlock>F3,P4</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="28" Grid.Column="22" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest"/>
@@ -1260,7 +1310,7 @@
                     <hx:HexItem Grid.Row="33" Grid.Column="21" />
                     <hx:HexItem Grid.Row="33" Grid.Column="22" />
                     <hx:HexItem Grid.Row="33" Grid.Column="23" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="33" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine">
+                    <hx:HexItem Grid.Row="33" Grid.Column="24" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.FoodMultiplier="6">
                         <TextBlock>F6</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="33" Grid.Column="25" />
@@ -1293,7 +1343,7 @@
                     <hx:HexItem Grid.Row="34" Grid.Column="25" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
                     <hx:HexItem Grid.Row="34" Grid.Column="26" />
                     <hx:HexItem Grid.Row="34" Grid.Column="27" />
-                    <hx:HexItem Grid.Row="34" Grid.Column="28" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="6">
+                    <hx:HexItem Grid.Row="34" Grid.Column="28" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="6" local:TileHelper.FoodMultiplier="2">
                         <TextBlock>F2,P6</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="34" Grid.Column="29" />
@@ -1329,7 +1379,7 @@
                     <hx:HexItem Grid.Row="36" Grid.Column="11" />
                     <hx:HexItem Grid.Row="36" Grid.Column="12" />
                     <hx:HexItem Grid.Row="36" Grid.Column="13" Style="{StaticResource Forest}" local:TileHelper.TileType="Forest" />
-                    <hx:HexItem Grid.Row="36" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="3.5">
+                    <hx:HexItem Grid.Row="36" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="3.5" local:TileHelper.FoodMultiplier="2">
                         <TextBlock FontSize="8">F2,P3.5</TextBlock>
                     </hx:HexItem>
                     <hx:HexItem Grid.Row="36" Grid.Column="15" />
