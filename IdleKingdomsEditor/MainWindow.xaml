@@ -159,42 +159,6 @@
             </StackPanel>
         </DockPanel>
         <Grid>
-            <Border BorderThickness="1" BorderBrush="Gray" Width="120" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <StackPanel>
-                    <Label>Selected</Label>
-                    <Separator/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Label>Prestige</Label>
-                        <Label Grid.Row="1">Food</Label>
-                        <Label Grid.Row="2">Food Cart</Label>
-                        <Label Grid.Row="3">Wood</Label>
-                        <Label Grid.Row="4">Wood Cart</Label>
-                        <Label Grid.Row="5">Science</Label>
-                        <Label Grid.Row="6">All Carts</Label>
-                        <TextBox Name="CurrentPrestige" Grid.Column="1"></TextBox>
-                        <TextBox Name="CurrentFood" Grid.Column="1" Grid.Row="1"></TextBox>
-                        <TextBox Name="CurrentFoodCart" Grid.Column="1" Grid.Row="2"></TextBox>
-                        <TextBox Name="CurrentWood" Grid.Column="1" Grid.Row="3"></TextBox>
-                        <TextBox Name="CurrentWoodCart" Grid.Column="1" Grid.Row="4"></TextBox>
-                        <TextBox Name="CurrentScience" Grid.Column="1" Grid.Row="5"></TextBox>
-                        <TextBox Name="CurrentAllCart" Grid.Column="1" Grid.Row="6"></TextBox>
-                    </Grid>
-                </StackPanel>
-                
-            </Border>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Grid Name="hexGrid" Height="1800" Width="2000">
                     <hx:HexList Name="HexList" Orientation="Vertical" RowCount="39" ColumnCount="39" Padding="10" SelectionMode="Multiple" SelectionChanged="HexList_SelectionChanged">
@@ -552,7 +516,7 @@
                         </hx:HexItem>
                         <hx:HexItem Grid.Row="12" Grid.Column="12" />
                         <hx:HexItem Grid.Row="12" Grid.Column="13" />
-                        <hx:HexItem Grid.Row="12" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.ScienceMultiplier="2">
+                        <hx:HexItem Grid.Row="12" Grid.Column="14" Style="{StaticResource Shrine}" local:TileHelper.TileType="Shrine" local:TileHelper.PrestigeMultiplier="2.5" local:TileHelper.ScienceMultiplier="3">
                             <TextBlock FontSize="8">S3,P2.5</TextBlock>
                         </hx:HexItem>
                         <hx:HexItem Grid.Row="12" Grid.Column="15" />
@@ -1480,6 +1444,41 @@
                     </hx:HexList>
                 </Grid>
             </ScrollViewer>
+            <Border BorderThickness="1" BorderBrush="Gray" Width="120" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <StackPanel Background="Snow">
+                    <Label>Selected</Label>
+                    <Separator/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label>Prestige</Label>
+                        <Label Grid.Row="1">Food</Label>
+                        <Label Grid.Row="2">Food Cart</Label>
+                        <Label Grid.Row="3">Wood</Label>
+                        <Label Grid.Row="4">Wood Cart</Label>
+                        <Label Grid.Row="5">Science</Label>
+                        <Label Grid.Row="6">All Carts</Label>
+                        <TextBox Name="CurrentPrestige" Grid.Column="1"></TextBox>
+                        <TextBox Name="CurrentFood" Grid.Column="1" Grid.Row="1"></TextBox>
+                        <TextBox Name="CurrentFoodCart" Grid.Column="1" Grid.Row="2"></TextBox>
+                        <TextBox Name="CurrentWood" Grid.Column="1" Grid.Row="3"></TextBox>
+                        <TextBox Name="CurrentWoodCart" Grid.Column="1" Grid.Row="4"></TextBox>
+                        <TextBox Name="CurrentScience" Grid.Column="1" Grid.Row="5"></TextBox>
+                        <TextBox Name="CurrentAllCart" Grid.Column="1" Grid.Row="6"></TextBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
         </Grid>
         
     </DockPanel>
