@@ -36,7 +36,7 @@ namespace IdleKingdomsEditor
             double science = 1;
             double scienceCart = 1;
 
-            foreach(var hexItem in HexList.SelectedItems)
+            foreach (var hexItem in HexList.SelectedItems)
             {
                 total++;
 
@@ -74,7 +74,8 @@ namespace IdleKingdomsEditor
 
             SelectedInfo.Text = total.ToString();
             ForestInfo.Text = forests.ToString();
-            PrestigeInfo.Text = FormatNumber(prestige);
+            PrestigeMultiplier.Text = FormatNumber(prestige);
+            PrestigeInfo.Text = FormatNumber(total - 9 > 0 ? (total - 9) * prestige : 0);
             FoodInfo.Text = FormatNumber(food);
             FoodCartInfo.Text = FormatNumber(foodCart);
             WoodInfo.Text = FormatNumber(wood);
@@ -107,9 +108,32 @@ namespace IdleKingdomsEditor
             CurrentAllCart.Text = currentAllCart > 0 ? FormatNumber(currentAllCart) : null;
         }
 
+        static readonly string[] _suffixes = 
+            {
+                "",
+                "K",
+                "M",
+                "B",
+                "T",
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "f"
+            };
+
         private string FormatNumber(double n)
         {
-            return $"{n:###,###,###,###,###,###,###,###,###.##}";
+            int index = 0;
+
+            while (n > 1000)
+            {
+                n /= 1000;
+                index++;
+            }
+
+            return $"{n:###.##}{_suffixes[index]}";
         }
 
         private void WidthTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -128,6 +152,11 @@ namespace IdleKingdomsEditor
             {
                 hexGrid.Height = height;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            HexList.SelectedItems.Clear();
         }
     }
 }

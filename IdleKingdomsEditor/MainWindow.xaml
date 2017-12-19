@@ -112,8 +112,14 @@
             </StackPanel>
             <Border DockPanel.Dock="Right" BorderBrush="Gray" BorderThickness="1" Padding="1">
                 <StackPanel>
-                    <Label>Prestige Multiplier</Label>
-                    <TextBlock Name="PrestigeInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <DockPanel>
+                        <Label>Prestige Multiplier</Label>
+                        <TextBlock Name="PrestigeMultiplier"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label>Prestige</Label>
+                        <TextBlock Name="PrestigeInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    </DockPanel>
                 </StackPanel>
             </Border>
             <StackPanel DockPanel.Dock="Right">
@@ -146,7 +152,12 @@
                     <TextBlock Name="FoodCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
-
+            <StackPanel DockPanel.Dock="Right">
+                <DockPanel>
+                    <Label>Next Tile Cost</Label>
+                    <TextBlock Name="TileCost"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                </DockPanel>
+            </StackPanel>
             <StackPanel DockPanel.Dock="Right">
                 <DockPanel>
                     <Label>Selected</Label>
@@ -157,6 +168,7 @@
                     <TextBlock Name="ForestInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
+            <Button DockPanel.Dock="Right" Click="Button_Click" Width="100" Height="40" Margin="4">Clear</Button>
         </DockPanel>
         <Grid>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
