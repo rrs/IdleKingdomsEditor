@@ -103,69 +103,73 @@
             <StackPanel>
                 <DockPanel>
                     <Label>Width</Label>
-                    <TextBox Name="WidthTextBox" Width="80" TextChanged="WidthTextBox_TextChanged">2000</TextBox>
+                    <TextBox Name="WidthTextBox" Width="80" TextChanged="WidthTextBox_TextChanged" HorizontalAlignment="Right" VerticalContentAlignment="Center">2000</TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label>Height</Label>
-                    <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged">1800</TextBox>
+                    <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged" HorizontalAlignment="Right" VerticalContentAlignment="Center">1800</TextBox>
                 </DockPanel>
             </StackPanel>
-            <Border DockPanel.Dock="Right" BorderBrush="Gray" BorderThickness="1" Padding="1">
-                <StackPanel>
+            <Border DockPanel.Dock="Right" BorderBrush="LightGray" BorderThickness="1" Margin="1">
+                <StackPanel Margin="1">
                     <DockPanel>
                         <Label>Prestige Multiplier</Label>
-                        <TextBlock Name="PrestigeMultiplier"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                        <TextBlock Name="PrestigeMultiplier"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                     </DockPanel>
                     <DockPanel>
                         <Label>Prestige</Label>
-                        <TextBlock Name="PrestigeInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                        <TextBlock Name="PrestigeInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                     </DockPanel>
                 </StackPanel>
             </Border>
-            <StackPanel DockPanel.Dock="Right">
+            <StackPanel DockPanel.Dock="Right" Margin="1">
                 <DockPanel>
                     <Label>Science Multiplier</Label>
-                    <TextBlock Name="ScienceInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="ScienceInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
                 <DockPanel>
                     <Label>Science Cart Multiplier</Label>
-                    <TextBlock Name="ScienceCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="ScienceCartInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Right">
+            <StackPanel DockPanel.Dock="Right" Margin="1">
                 <DockPanel>
                     <Label>Wood Multiplier</Label>
-                    <TextBlock Name="WoodInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="WoodInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
                 <DockPanel>
                     <Label>Wood Cart Multiplier</Label>
-                    <TextBlock Name="WoodCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="WoodCartInfo"  FontSize="20"  HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Right">
+            <StackPanel DockPanel.Dock="Right" Margin="1">
                 <DockPanel>
                     <Label >Food Multiplier</Label>
-                    <TextBlock Name="FoodInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="FoodInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
                 <DockPanel>
                     <Label>Food Cart Multiplier</Label>
-                    <TextBlock Name="FoodCartInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="FoodCartInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Right">
+            <StackPanel DockPanel.Dock="Right" Margin="1">
                 <DockPanel>
                     <Label>Next Tile Cost</Label>
-                    <TextBlock Name="TileCost"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="TileCost"  FontSize="20" HorizontalAlignment="Right">TBC</TextBlock>
+                </DockPanel>
+                <DockPanel>
+                    <Label>Total Tile Cost</Label>
+                    <TextBlock Name="TileCostTotal"  FontSize="20" HorizontalAlignment="Right">TBC</TextBlock>
                 </DockPanel>
             </StackPanel>
-            <StackPanel DockPanel.Dock="Right">
+            <StackPanel DockPanel.Dock="Right" Margin="1">
                 <DockPanel>
                     <Label>Selected</Label>
-                    <TextBlock Name="SelectedInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="SelectedInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
                 <DockPanel>
                     <Label>Forest</Label>
-                    <TextBlock Name="ForestInfo"  FontSize="20" DockPanel.Dock="Right"></TextBlock>
+                    <TextBlock Name="ForestInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
             <Button DockPanel.Dock="Right" Click="Button_Click" Width="100" Height="40" Margin="4">Clear</Button>
