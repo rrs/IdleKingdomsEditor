@@ -110,6 +110,19 @@
                     <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged" HorizontalAlignment="Right" VerticalContentAlignment="Center">1800</TextBox>
                 </DockPanel>
             </StackPanel>
+            <StackPanel>
+                <DockPanel>
+                    <Label Width="50">Name</Label>
+                    <TextBox Name="RouteName" Width="200"></TextBox>
+                    <Button Width="20" Click="NewButton_Click">+</Button>
+                </DockPanel>
+                <DockPanel>
+                    <Button Width="20" DockPanel.Dock="Right" Click="DeleteButton_Click">-</Button>
+                    <Label Width="50">Route</Label>
+                    <ComboBox Name="SavedRoutes" DisplayMemberPath="Name" SelectionChanged="SavedRoutes_SelectionChanged" />
+                </DockPanel>
+            </StackPanel>
+            <Button Width="100" Height="40" Margin="4" Click="SaveButton_Click">Save</Button>
             <Border DockPanel.Dock="Right" BorderBrush="LightGray" BorderThickness="1" Margin="1">
                 <StackPanel Margin="1">
                     <DockPanel>
@@ -172,7 +185,7 @@
                     <TextBlock Name="ForestInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
-            <Button DockPanel.Dock="Right" Click="Button_Click" Width="100" Height="40" Margin="4">Clear</Button>
+            <Button DockPanel.Dock="Right" Click="ClearButton_Click" Width="100" Height="40" Margin="4">Clear</Button>
         </DockPanel>
         <Grid>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

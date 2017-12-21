@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -19,9 +21,20 @@ namespace IdleKingdomsEditor
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private List<SavedRoute> _savedRoutes;
+
+        public MainWindow(List<SavedRoute> savedRoutes)
         {
             InitializeComponent();
+            _savedRoutes = savedRoutes;
+            foreach(var route in savedRoutes)
+            {
+                SavedRoutes.Items.Add(route);
+            }
+            if (savedRoutes.Any())
+            {
+                SavedRoutes.SelectedItem = savedRoutes.First();
+            }
         }
 
         private void HexList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -113,9 +126,11 @@ namespace IdleKingdomsEditor
             CurrentWoodCart.Text = currentWoodCart > 0 ? FormatNumber(currentWoodCart) : null;
             CurrentScience.Text = currentScience > 0 ? FormatNumber(currentScience) : null;
             CurrentAllCart.Text = currentAllCart > 0 ? FormatNumber(currentAllCart) : null;
+
+            var selectedRoute = SavedRoutes.SelectedItem as SavedRoute;
+            if (selectedRoute == null) return;
+            selectedRoute.Cells = SelectedCells;
         }
-
-
 
         private string FormatNumber(double n)
         {
@@ -137,6 +152,10 @@ namespace IdleKingdomsEditor
             {
                 hexGrid.Width = width;
             }
+
+            var selectedRoute = SavedRoutes.SelectedItem as SavedRoute;
+            if (selectedRoute == null) return;
+            selectedRoute.Width = width;
         }
 
         private void HeightTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -146,12 +165,65 @@ namespace IdleKingdomsEditor
             {
                 hexGrid.Height = height;
             }
+
+            var selectedRoute = SavedRoutes.SelectedItem as SavedRoute;
+            if (selectedRoute == null) return;
+            selectedRoute.Height = height;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             HexList.SelectedItems.Clear();
         }
+
+        private void SavedRoutes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedRoute = SavedRoutes.SelectedItem as SavedRoute;
+            if (selectedRoute == null) return;
+
+            HexList.SelectedItems.Clear();
+
+            hexGrid.Width = selectedRoute.Width;
+            hexGrid.Height = selectedRoute.Height;
+
+            var hexCells = from hexItem in HexList.Items.Cast<UIElement>()
+                           join hexCell in selectedRoute.Cells on new { Row = Grid.GetRow(hexItem), Col = Grid.GetColumn(hexItem) } equals new { hexCell.Row, hexCell.Col }
+                           select hexItem;
+
+
+            foreach (var cell in hexCells)
+            {
+                HexList.SelectedItems.Add(cell);
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedRoute = SavedRoutes.SelectedItem as SavedRoute;
+            if (selectedRoute == null) return;
+
+            _savedRoutes.Remove(selectedRoute);
+            SavedRoutes.Items.Remove(selectedRoute);
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var json = JsonConvert.SerializeObject(_savedRoutes);
+            File.WriteAllText(Constants.SavedRoutesFilePath, json);
+        }
+
+        private void NewButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(RouteName.Text)) return;
+
+            var savedRoute = new SavedRoute { Name = RouteName.Text, Cells = SelectedCells, Height = hexGrid.Height, Width = hexGrid.Width };
+            _savedRoutes.Add(savedRoute);
+            SavedRoutes.Items.Add(savedRoute);
+            SavedRoutes.SelectedItem = savedRoute;
+            RouteName.Text = "";
+        }
+
+        private List<HexCell> SelectedCells => HexList.SelectedItems.Cast<UIElement>().Select(o => new HexCell { Row = Grid.GetRow(o), Col = Grid.GetColumn(o) }).ToList();
 
         static readonly string[] _numberSuffixes =
         {
@@ -258,6 +330,11 @@ namespace IdleKingdomsEditor
             30_990_000_000_000_000_000_000d,
             53_310_000_000_000_000_000_000d,
             91_670_000_000_000_000_000_000d,
+            157_640_000_000_000_000_000_000d,
+            271_030_000_000_000_000_000_000d,
+            465_930_000_000_000_000_000_000d,
+            800_880_000_000_000_000_000_000d,
         };
+
     }
 }
