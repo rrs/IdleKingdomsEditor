@@ -26,7 +26,7 @@ namespace IdleKingdomsEditor
 
         private void HexList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int total = 0;
+            int nSelected = 0;
             int forests = 0;
             double prestige = 1;
             double food = 1;
@@ -38,7 +38,7 @@ namespace IdleKingdomsEditor
 
             foreach (var hexItem in HexList.SelectedItems)
             {
-                total++;
+                nSelected++;
 
                 var o = (DependencyObject)hexItem;
 
@@ -72,10 +72,17 @@ namespace IdleKingdomsEditor
                 }
             }
 
-            SelectedInfo.Text = total.ToString();
+            var tileCosts = Enumerable.Range(0, nSelected + 2).Select(o => o < _tilesCosts.Length ? _tilesCosts[o] : _tilesCosts[_tilesCosts.Length - 1] * Math.Pow(1.72, o - _tilesCosts.Length + 1)).ToList();
+
+            var nextTileCost = tileCosts[tileCosts.Count - 1];
+            var totalTileCost = tileCosts.Sum() - nextTileCost;
+
+            TileCost.Text = (nSelected + 1 < _tilesCosts.Length ? "" : "~") + FormatNumber(nextTileCost);
+            TileCostTotal.Text = (nSelected < _tilesCosts.Length ? "" : "~") + FormatNumber(totalTileCost);
+            SelectedInfo.Text = nSelected.ToString();
             ForestInfo.Text = forests.ToString();
             PrestigeMultiplier.Text = FormatNumber(prestige);
-            PrestigeInfo.Text = FormatNumber(total - 9 > 0 ? (total - 9) * prestige : 0);
+            PrestigeInfo.Text = FormatNumber(nSelected - 9 > 0 ? (nSelected - 9) * prestige : 0);
             FoodInfo.Text = FormatNumber(food);
             FoodCartInfo.Text = FormatNumber(foodCart);
             WoodInfo.Text = FormatNumber(wood);
@@ -108,20 +115,7 @@ namespace IdleKingdomsEditor
             CurrentAllCart.Text = currentAllCart > 0 ? FormatNumber(currentAllCart) : null;
         }
 
-        static readonly string[] _suffixes = 
-            {
-                "",
-                "K",
-                "M",
-                "B",
-                "T",
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "f"
-            };
+
 
         private string FormatNumber(double n)
         {
@@ -133,7 +127,7 @@ namespace IdleKingdomsEditor
                 index++;
             }
 
-            return $"{n:###.##}{_suffixes[index]}";
+            return $"{n:###.##}{_numberSuffixes[index]}";
         }
 
         private void WidthTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -158,5 +152,112 @@ namespace IdleKingdomsEditor
         {
             HexList.SelectedItems.Clear();
         }
+
+        static readonly string[] _numberSuffixes =
+        {
+            "",
+            "K",
+            "M",
+            "B",
+            "T",
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
+        };
+
+        static readonly double[] _tilesCosts =
+        {
+            0,
+            0,
+            1,
+            94,
+            165,
+            372,
+            2_980,
+            4_890,
+            8_110,
+            14_230,
+            19_230,
+            25_230,
+            65_800,
+            121_190,
+            221_860,
+            404_110,
+            732_780,
+            1_320_00,
+            2_380_000,
+            4_280_000,
+            7_650_000,
+            13_660_000,
+            24_320_000,
+            43_220_000,
+            76_680_000,
+            135_780_000,
+            240_040_000,
+            423_800_000,
+            747_140_000,
+            1_320_000_000,
+            2_310_000_000,
+            4_060_000_000,
+            7_130_000_000,
+            12_500_000_000,
+            21_900_000_000,
+            38_320_000_000,
+            67_010_000_000,
+            117_080_000_000,
+            204_420_000_000,
+            356_650_000_000,
+            621_850_000_000,
+            1_080_000_000_000,
+            1_890_000_000_000,
+            3_280_000_000_000,
+            5_710_000_000_000,
+            9_930_000_000_000,
+            17_620_000_000_000,
+            28_980_000_000_000,
+            52_050_000_000_000,
+            90_340_000_000_000,
+            156_710_000_000_000,
+            271_730_000_000_000,
+            471_000_000_000_000,
+            816_090_000_000_000,
+            1_410_000_000_000_000,
+            2_450_000_000_000_000,
+            4_240_000_000_000_000,
+            7_330_000_000_000_000,
+            12_680_000_000_000_000,
+            21_930_000_000_000_000,
+            37_910_000_000_000_000,
+            65_520_000_000_000_000,
+            113_210_000_000_000_000,
+            195_570_000_000_000_000,
+            337_740_000_000_000_000,
+            583_130_000_000_000_000,
+            1_010_000_000_000_000_000,
+            1_740_000_000_000_000_000,
+            3_000_000_000_000_000_000,
+            5_170_000_000_000_000_000,
+            8_920_000_000_000_000_000,
+            15_370_000_000_000_000_000,
+            26_500_000_000_000_000_000d,
+            45_680_000_000_000_000_000d,
+            78_730_000_000_000_000_000d,
+            135_640_000_000_000_000_000d,
+            233_670_000_000_000_000_000d,
+            402_470_000_000_000_000_000d,
+            693_080_000_000_000_000_000d,
+            1_190_000_000_000_000_000_000d,
+            2_050_000_000_000_000_000_000d,
+            3_540_000_000_000_000_000_000d,
+            6_090_000_000_000_000_000_000d,
+            10_470_000_000_000_000_000_000d,
+            18_020_000_000_000_000_000_000d,
+            30_990_000_000_000_000_000_000d,
+            53_310_000_000_000_000_000_000d,
+            91_670_000_000_000_000_000_000d,
+        };
     }
 }

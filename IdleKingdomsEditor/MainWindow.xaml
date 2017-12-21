@@ -155,11 +155,11 @@
             <StackPanel DockPanel.Dock="Right" Margin="1">
                 <DockPanel>
                     <Label>Next Tile Cost</Label>
-                    <TextBlock Name="TileCost"  FontSize="20" HorizontalAlignment="Right">TBC</TextBlock>
+                    <TextBlock Name="TileCost"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
                 <DockPanel>
                     <Label>Total Tile Cost</Label>
-                    <TextBlock Name="TileCostTotal"  FontSize="20" HorizontalAlignment="Right">TBC</TextBlock>
+                    <TextBlock Name="TileCostTotal"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
             <StackPanel DockPanel.Dock="Right" Margin="1">

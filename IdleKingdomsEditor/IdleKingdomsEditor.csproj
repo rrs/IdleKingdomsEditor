@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RouteFinder.cs" />
     <Compile Include="TileType.cs" />
     <Compile Include="TileHelper.cs" />
     <Page Include="MainWindow.xaml">
