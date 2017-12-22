@@ -5,6 +5,8 @@ Simple editor to play around with routes
 
 build folder contains the build output of the IdleKingdomdsEditor project
 
+Thanks to https://github.com/AlexanderSharykin/HexGrid for the hex control repo i forked
+
 Controls
 --------
 
