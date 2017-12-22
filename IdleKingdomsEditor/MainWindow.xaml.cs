@@ -174,6 +174,10 @@ namespace IdleKingdomsEditor
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             HexList.SelectedItems.Clear();
+
+            var selectedRoute = SavedRoutes.SelectedItem as SavedRoute;
+            if (selectedRoute == null) return;
+            selectedRoute.Cells = SelectedCells;
         }
 
         private void SavedRoutes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -182,9 +186,6 @@ namespace IdleKingdomsEditor
             if (selectedRoute == null) return;
 
             HexList.SelectedItems.Clear();
-
-            hexGrid.Width = selectedRoute.Width;
-            hexGrid.Height = selectedRoute.Height;
 
             var hexCells = from hexItem in HexList.Items.Cast<UIElement>()
                            join hexCell in selectedRoute.Cells on new { Row = Grid.GetRow(hexItem), Col = Grid.GetColumn(hexItem) } equals new { hexCell.Row, hexCell.Col }
@@ -195,6 +196,9 @@ namespace IdleKingdomsEditor
             {
                 HexList.SelectedItems.Add(cell);
             }
+
+            HeightTextBox.Text = selectedRoute.Height.ToString();
+            WidthTextBox.Text = selectedRoute.Width.ToString();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
