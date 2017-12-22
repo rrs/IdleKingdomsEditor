@@ -1,10 +1,7 @@
-﻿using System;
+﻿using IdleKingdomsEditor.DataObjects;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
 
-namespace IdleKingdomsEditor
+namespace IdleKingdomsEditor.Models
 {
     public class SavedRoute
     {

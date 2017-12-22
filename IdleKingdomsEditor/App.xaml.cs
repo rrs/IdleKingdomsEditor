@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using HexGridControl;
+using IdleKingdomsEditor.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,6 +8,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace IdleKingdomsEditor
 {
@@ -26,7 +29,12 @@ namespace IdleKingdomsEditor
             }
             catch { }
 
-            var w = new MainWindow(savedRoutes.ToList());
+            var vm = new MainViewModel();
+
+            var w = new MainWindow
+            {
+                DataContext = vm
+            };
 
             w.ShowDialog();
         }
