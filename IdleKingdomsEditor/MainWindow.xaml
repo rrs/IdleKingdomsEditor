@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hx="clr-namespace:HexGridControl;assembly=HexGridControl"
+        xmlns:local="clr-namespace:IdleKingdomsEditor"
         xmlns:views="clr-namespace:IdleKingdomsEditor.Views"
         xmlns:converters="clr-namespace:IdleKingdomsEditor.Converters"       
         mc:Ignorable="d"
@@ -29,6 +30,7 @@
                                 <Setter Property="Grid.Row" Value="{Binding Row}" />
                                 <Setter Property="Grid.Column" Value="{Binding Col}" />
                                 <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                                <Setter Property="local:ListItemSelectedHelper.Selected" Value="{Binding}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding TileType}" Value="Grass">
                                         <Setter Property="Background" Value="#009900" />

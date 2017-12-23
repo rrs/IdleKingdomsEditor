@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ListItemSelectedHelper.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Converters\ScaleDownConverter.cs" />
     <Compile Include="DataObjects\HexCell.cs" />

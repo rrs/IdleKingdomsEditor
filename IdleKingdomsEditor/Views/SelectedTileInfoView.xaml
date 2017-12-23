@@ -7,7 +7,7 @@
              mc:Ignorable="d">
     <Border BorderThickness="1" BorderBrush="Gray" Width="120" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left">
         <StackPanel Background="Snow">
-            <Label>Selected</Label>
+            <Label>Type</Label>
             <Separator/>
             <Grid>
                 <Grid.ColumnDefinitions>
