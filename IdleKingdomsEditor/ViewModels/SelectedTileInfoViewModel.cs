@@ -7,6 +7,5 @@ namespace IdleKingdomsEditor.ViewModels
 {
     class SelectedTileInfoViewModel
     {
-        public 
     }
 }
