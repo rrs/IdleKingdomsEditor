@@ -64,17 +64,20 @@
     <Compile Include="Models\HexMap.cs" />
     <Compile Include="Models\MapTile.cs" />
     <Compile Include="KnownCoordinates.cs" />
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="DevMap\ReferenceMap.xaml.cs">
       <DependentUpon>ReferenceMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NumberFormatter.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="RouteFinder.cs" />
     <Compile Include="Models\SavedRoute.cs" />
     <Compile Include="DataObjects\ShrineCell.cs" />
     <Compile Include="Models\ShrineTile.cs" />
+    <Compile Include="TileCosts.cs" />
     <Compile Include="TileType.cs" />
     <Compile Include="DevMap\TileHelper.cs" />
+    <Compile Include="ViewModels\InfoViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

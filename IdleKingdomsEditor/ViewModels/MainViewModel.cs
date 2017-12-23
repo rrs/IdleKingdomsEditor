@@ -6,16 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace IdleKingdomsEditor
+namespace IdleKingdomsEditor.ViewModels
 {
     /// <summary>
     /// Not yet in use
     /// </summary>
     class MainViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        private double _width;
+        private double _width = 900;
 
         public double Width
         {
@@ -27,7 +26,7 @@ namespace IdleKingdomsEditor
             }
         }
 
-        private double _height;
+        private double _height = 900;
 
         public double Height
         {
@@ -38,6 +37,32 @@ namespace IdleKingdomsEditor
                 OnPropertyChanged(nameof(Height));
             }
         }
+
+        private string _routeName;
+
+        public string RouteName
+        {
+            get => _routeName;
+            set
+            {
+                _routeName = value;
+                OnPropertyChanged(nameof(RouteName));
+            }
+        }
+
+
+        private MapTile _selectedTile;
+        public MapTile SelectedTile
+        {
+            get => _selectedTile;
+            set
+            {
+                _selectedTile = value;
+                OnPropertyChanged(nameof(SelectedTile));
+                UpdateInfo(Tiles.Where(o => o.IsSelected));
+            }
+        }
+
 
         private HexMap _hexMap;
 
@@ -80,6 +105,7 @@ namespace IdleKingdomsEditor
         {
             throw new NotImplementedException();
         }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

@@ -7,7 +7,7 @@ using System.Windows.Controls;
 namespace IdleKingdomsEditor
 {
     /// <summary>
-    /// used to help me generate known tiles
+    /// used to help me generate known tiles, as id already put the effort into the layout
     /// </summary>
     public partial class ReferenceMap : UserControl
     {

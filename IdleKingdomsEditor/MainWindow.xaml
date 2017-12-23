@@ -19,26 +19,26 @@
             <StackPanel>
                 <DockPanel>
                     <Label>Width</Label>
-                    <TextBox Name="WidthTextBox" Width="80" TextChanged="WidthTextBox_TextChanged" HorizontalAlignment="Right" VerticalContentAlignment="Center">2000</TextBox>
+                    <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
                 </DockPanel>
                 <DockPanel>
                     <Label>Height</Label>
-                    <TextBox Name="HeightTextBox" Width="80" TextChanged="HeightTextBox_TextChanged" HorizontalAlignment="Right" VerticalContentAlignment="Center">1800</TextBox>
+                    <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
                 </DockPanel>
             </StackPanel>
             <StackPanel>
                 <DockPanel>
                     <Label Width="50">Name</Label>
-                    <TextBox Name="RouteName" Width="200"></TextBox>
-                    <Button Width="20" Click="NewButton_Click">+</Button>
+                    <TextBox Text="{Binding RouteName}" Width="200"></TextBox>
+                    <Button Width="20" Command="{Binding NewRouteCommand}">+</Button>
                 </DockPanel>
                 <DockPanel>
-                    <Button Width="20" DockPanel.Dock="Right" Click="DeleteButton_Click">-</Button>
+                    <Button Width="20" DockPanel.Dock="Right" Command="{Binding DeleteRouteCommand}">-</Button>
                     <Label Width="50">Route</Label>
                     <ComboBox Name="SavedRoutes" DisplayMemberPath="Name" SelectionChanged="SavedRoutes_SelectionChanged" />
                 </DockPanel>
             </StackPanel>
-            <Button Width="100" Height="40" Margin="4" Click="SaveButton_Click">Save</Button>
+            <Button Width="100" Height="40" Margin="4" Command="{Binding SaveRoutesCommand}">Save</Button>
             <Border DockPanel.Dock="Right" BorderBrush="LightGray" BorderThickness="1" Margin="1">
                 <StackPanel Margin="1">
                     <DockPanel>
@@ -101,16 +101,18 @@
                     <TextBlock Name="ForestInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
                 </DockPanel>
             </StackPanel>
-            <Button DockPanel.Dock="Right" Click="ClearButton_Click" Width="100" Height="40" Margin="4">Clear</Button>
+            <Button Command="{Binding ClearRouteCommand}" DockPanel.Dock="Right"  Width="100" Height="40" Margin="4">Clear</Button>
         </DockPanel>
         <Grid>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Grid Name="hexGrid" Height="1000" Width="1000">
-                    <hx:HexList ItemsSource="{Binding Tiles}" RowCount="{Binding Diameter}" ColumnCount="{Binding Diameter}" Orientation="Vertical">
+                <Grid Name="hexGrid" Height="{Binding Height}" Width="{Binding Width}">
+                    <hx:HexList ItemsSource="{Binding Tiles}" RowCount="{Binding Diameter}" ColumnCount="{Binding Diameter}" Orientation="Vertical" SelectionMode="Multiple"
+                                SelectedItem="{Binding SelectedTile}">
                         <hx:HexList.ItemContainerStyle>
                             <Style TargetType="{x:Type hx:HexItem}" BasedOn="{StaticResource HexTile}">
-                                <Setter Property="Grid.Row" Value="{Binding Path=Row}" />
-                                <Setter Property="Grid.Column" Value="{Binding Path=Col}" />
+                                <Setter Property="Grid.Row" Value="{Binding Row}" />
+                                <Setter Property="Grid.Column" Value="{Binding Col}" />
+                                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding TileType}" Value="Grass">
                                         <Setter Property="Background" Value="#009900" />
