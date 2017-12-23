@@ -70,6 +70,8 @@ namespace IdleKingdomsEditor.ViewModels
 
         private void ChangeRoute()
         {
+            if (SelectedRoute == null) return;
+
             Height = SelectedRoute.Height;
             Width = SelectedRoute.Width;
 

@@ -69,7 +69,7 @@ namespace IdleKingdomsEditor.ViewModels
             ForagingHutMultiplierText = NumberFormatter.FormatNumber(foragingHuts);
         }
 
-        private string _selectedTilesText;
+        private string _selectedTilesText = "0";
 
         public string SelectedTilesText
         {
@@ -81,7 +81,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _selectedForestsText;
+        private string _selectedForestsText = "0";
 
         public string SelectedForestsText
         {
@@ -93,7 +93,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _nextTileCostText;
+        private string _nextTileCostText = "0";
 
         public string NextTileCostText
         {
@@ -105,7 +105,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _tileCostTotalText;
+        private string _tileCostTotalText = "0";
 
         public string TileCostTotalText
         {
@@ -117,7 +117,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _foodMultiplierText;
+        private string _foodMultiplierText = "0";
 
         public string FoodMultiplierText
         {
@@ -129,7 +129,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _foodCartMultiplierText;
+        private string _foodCartMultiplierText = "0";
 
         public string FoodCartMultiplierText
         {
@@ -141,7 +141,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _woodMultiplierText;
+        private string _woodMultiplierText = "0";
 
         public string WoodMultiplierText
         {
@@ -153,7 +153,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _woodCartMultiplierText;
+        private string _woodCartMultiplierText = "0";
 
         public string WoodCartMultiplierText
         {
@@ -165,7 +165,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _scienceMultiplierText;
+        private string _scienceMultiplierText = "0";
 
         public string ScienceMultiplierText
         {
@@ -177,7 +177,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _scienceCartMultiplierText;
+        private string _scienceCartMultiplierText = "0";
 
         public string ScienceCartMultiplierText
         {
@@ -189,7 +189,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _foragingHutMultiplierText;
+        private string _foragingHutMultiplierText = "0";
 
         public string ForagingHutMultiplierText
         {
@@ -201,7 +201,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _prestigeMultiplierText;
+        private string _prestigeMultiplierText = "0";
 
         public string PrestigeMultiplierText
         {
@@ -213,7 +213,7 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _prestigeTotalText;
+        private string _prestigeTotalText = "0";
 
         public string PrestigeTotalText
         {

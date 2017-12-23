@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:hx="clr-namespace:HexGridControl;assembly=HexGridControl"
         xmlns:local="clr-namespace:IdleKingdomsEditor"
         xmlns:views="clr-namespace:IdleKingdomsEditor.Views"
@@ -30,7 +31,6 @@
                                 <Setter Property="Grid.Row" Value="{Binding Row}" />
                                 <Setter Property="Grid.Column" Value="{Binding Col}" />
                                 <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                                <Setter Property="local:ListItemSelectedHelper.Selected" Value="{Binding}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding TileType}" Value="Grass">
                                         <Setter Property="Background" Value="#009900" />
@@ -64,6 +64,7 @@
                     </hx:HexList>
                 </Grid>
             </ScrollViewer>
+            <views:SelectedTileInfoView DataContext="{Binding SelectedTileInfoViewModel}" Margin="8 8 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" />
         </Grid>
     </DockPanel>
     

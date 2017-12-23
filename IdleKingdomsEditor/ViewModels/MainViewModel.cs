@@ -14,6 +14,7 @@ namespace IdleKingdomsEditor.ViewModels
     class MainViewModel : NotifyPropertyChangedViewModel
     {
         public RouteInfoViewModel RouteInfoViewModel { get; } = new RouteInfoViewModel();
+        public SelectedTileInfoViewModel SelectedTileInfoViewModel { get; } = new SelectedTileInfoViewModel();
         public RouteManagementViewModel RouteManagementViewModel { get; private set; }
 
         private readonly HexMap _hexMap;
@@ -33,6 +34,7 @@ namespace IdleKingdomsEditor.ViewModels
         private void Tiles_ListChanged(object sender, ListChangedEventArgs e)
         {
             RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected));
+            SelectedTileInfoViewModel.ChangeSelectedInfo(Tiles[e.NewIndex]);
         }
     }
 }
