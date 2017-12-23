@@ -5,13 +5,13 @@ using System.Text;
 
 namespace IdleKingdomsEditor
 {
-    static class TileCosts
+    static class TileCostHelper
     {
         public static List<double> Values(int n)
         {
             var lastKnowRatio = KnownValues[KnownValues.Length - 1] / KnownValues[KnownValues.Length - 2];
 
-            var tileCosts = Enumerable.Range(0, n + 2).Select(o => o < KnownValues.Length ? KnownValues[o] : KnownValues[KnownValues.Length - 1] * Math.Pow(lastKnowRatio, o - KnownValues.Length + 1)).ToList();
+            var tileCosts = Enumerable.Range(0, n).Select(o => o < KnownValues.Length ? KnownValues[o] : KnownValues[KnownValues.Length - 1] * Math.Pow(lastKnowRatio, o - KnownValues.Length + 1)).ToList();
 
             return tileCosts;
         }

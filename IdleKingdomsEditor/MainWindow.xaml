@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hx="clr-namespace:HexGridControl;assembly=HexGridControl"
+        xmlns:views="clr-namespace:IdleKingdomsEditor.Views"
         xmlns:converters="clr-namespace:IdleKingdomsEditor.Converters"       
         mc:Ignorable="d"
         WindowState="Maximized"
@@ -16,103 +17,18 @@
     </Window.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" LastChildFill="False">
-            <StackPanel>
-                <DockPanel>
-                    <Label>Width</Label>
-                    <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
-                </DockPanel>
-                <DockPanel>
-                    <Label>Height</Label>
-                    <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
-                </DockPanel>
-            </StackPanel>
-            <StackPanel>
-                <DockPanel>
-                    <Label Width="50">Name</Label>
-                    <TextBox Text="{Binding RouteName}" Width="200"></TextBox>
-                    <Button Width="20" Command="{Binding NewRouteCommand}">+</Button>
-                </DockPanel>
-                <DockPanel>
-                    <Button Width="20" DockPanel.Dock="Right" Command="{Binding DeleteRouteCommand}">-</Button>
-                    <Label Width="50">Route</Label>
-                    <ComboBox Name="SavedRoutes" DisplayMemberPath="Name" SelectionChanged="SavedRoutes_SelectionChanged" />
-                </DockPanel>
-            </StackPanel>
-            <Button Width="100" Height="40" Margin="4" Command="{Binding SaveRoutesCommand}">Save</Button>
-            <Border DockPanel.Dock="Right" BorderBrush="LightGray" BorderThickness="1" Margin="1">
-                <StackPanel Margin="1">
-                    <DockPanel>
-                        <Label>Prestige Multiplier</Label>
-                        <TextBlock Name="PrestigeMultiplier"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                    </DockPanel>
-                    <DockPanel>
-                        <Label>Prestige</Label>
-                        <TextBlock Name="PrestigeInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                    </DockPanel>
-                </StackPanel>
-            </Border>
-            <StackPanel DockPanel.Dock="Right" Margin="1">
-                <DockPanel>
-                    <Label>Science Multiplier</Label>
-                    <TextBlock Name="ScienceInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-                <DockPanel>
-                    <Label>Science Cart Multiplier</Label>
-                    <TextBlock Name="ScienceCartInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Right" Margin="1">
-                <DockPanel>
-                    <Label>Wood Multiplier</Label>
-                    <TextBlock Name="WoodInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-                <DockPanel>
-                    <Label>Wood Cart Multiplier</Label>
-                    <TextBlock Name="WoodCartInfo"  FontSize="20"  HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Right" Margin="1">
-                <DockPanel>
-                    <Label >Food Multiplier</Label>
-                    <TextBlock Name="FoodInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-                <DockPanel>
-                    <Label>Food Cart Multiplier</Label>
-                    <TextBlock Name="FoodCartInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Right" Margin="1">
-                <DockPanel>
-                    <Label>Next Tile Cost</Label>
-                    <TextBlock Name="TileCost"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-                <DockPanel>
-                    <Label>Total Tile Cost</Label>
-                    <TextBlock Name="TileCostTotal"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Right" Margin="1">
-                <DockPanel>
-                    <Label>Selected</Label>
-                    <TextBlock Name="SelectedInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-                <DockPanel>
-                    <Label>Forest</Label>
-                    <TextBlock Name="ForestInfo"  FontSize="20" HorizontalAlignment="Right"></TextBlock>
-                </DockPanel>
-            </StackPanel>
-            <Button Command="{Binding ClearRouteCommand}" DockPanel.Dock="Right"  Width="100" Height="40" Margin="4">Clear</Button>
+            <views:RouteManagementView DataContext="{Binding RouteManagementViewModel}" />
+            <views:RouteInfoView DataContext="{Binding RouteInfoViewModel}" DockPanel.Dock="Right" />
         </DockPanel>
         <Grid>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <Grid Name="hexGrid" Height="{Binding Height}" Width="{Binding Width}">
-                    <hx:HexList ItemsSource="{Binding Tiles}" RowCount="{Binding Diameter}" ColumnCount="{Binding Diameter}" Orientation="Vertical" SelectionMode="Multiple"
-                                SelectedItem="{Binding SelectedTile}">
+                <Grid Name="hexGrid" Height="{Binding RouteManagementViewModel.Height}" Width="{Binding RouteManagementViewModel.Width}">
+                    <hx:HexList ItemsSource="{Binding Tiles}" RowCount="{Binding Diameter}" ColumnCount="{Binding Diameter}" Orientation="Vertical" SelectionMode="Multiple">
                         <hx:HexList.ItemContainerStyle>
                             <Style TargetType="{x:Type hx:HexItem}" BasedOn="{StaticResource HexTile}">
                                 <Setter Property="Grid.Row" Value="{Binding Row}" />
                                 <Setter Property="Grid.Column" Value="{Binding Col}" />
-                                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding TileType}" Value="Grass">
                                         <Setter Property="Background" Value="#009900" />
@@ -146,43 +62,7 @@
                     </hx:HexList>
                 </Grid>
             </ScrollViewer>
-            <Border BorderThickness="1" BorderBrush="Gray" Width="120" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left">
-                <StackPanel Background="Snow">
-                    <Label>Selected</Label>
-                    <Separator/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Label>Prestige</Label>
-                        <Label Grid.Row="1">Food</Label>
-                        <Label Grid.Row="2">Food Cart</Label>
-                        <Label Grid.Row="3">Wood</Label>
-                        <Label Grid.Row="4">Wood Cart</Label>
-                        <Label Grid.Row="5">Science</Label>
-                        <Label Grid.Row="6">All Carts</Label>
-                        <TextBox Name="CurrentPrestige" Grid.Column="1"></TextBox>
-                        <TextBox Name="CurrentFood" Grid.Column="1" Grid.Row="1"></TextBox>
-                        <TextBox Name="CurrentFoodCart" Grid.Column="1" Grid.Row="2"></TextBox>
-                        <TextBox Name="CurrentWood" Grid.Column="1" Grid.Row="3"></TextBox>
-                        <TextBox Name="CurrentWoodCart" Grid.Column="1" Grid.Row="4"></TextBox>
-                        <TextBox Name="CurrentScience" Grid.Column="1" Grid.Row="5"></TextBox>
-                        <TextBox Name="CurrentAllCart" Grid.Column="1" Grid.Row="6"></TextBox>
-                    </Grid>
-                </StackPanel>
-            </Border>
         </Grid>
-        
     </DockPanel>
     
 </Window>

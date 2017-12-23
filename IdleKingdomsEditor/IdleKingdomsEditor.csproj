@@ -64,6 +64,7 @@
     <Compile Include="Models\HexMap.cs" />
     <Compile Include="Models\MapTile.cs" />
     <Compile Include="KnownCoordinates.cs" />
+    <Compile Include="NotifyPropertyChangedViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="DevMap\ReferenceMap.xaml.cs">
       <DependentUpon>ReferenceMap.xaml</DependentUpon>
@@ -74,10 +75,21 @@
     <Compile Include="Models\SavedRoute.cs" />
     <Compile Include="DataObjects\ShrineCell.cs" />
     <Compile Include="Models\ShrineTile.cs" />
-    <Compile Include="TileCosts.cs" />
+    <Compile Include="TileCostHelper.cs" />
     <Compile Include="TileType.cs" />
     <Compile Include="DevMap\TileHelper.cs" />
-    <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\RouteInfoViewModel.cs" />
+    <Compile Include="ViewModels\RouteManagementViewModel.cs" />
+    <Compile Include="ViewModels\SelectedTileInfoViewModel.cs" />
+    <Compile Include="Views\RouteInfoView.xaml.cs">
+      <DependentUpon>RouteInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RouteManagementView.xaml.cs">
+      <DependentUpon>RouteManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectedTileInfoView.xaml.cs">
+      <DependentUpon>SelectedTileInfoView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +103,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="DevMap\ReferenceMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RouteInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RouteManagementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectedTileInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

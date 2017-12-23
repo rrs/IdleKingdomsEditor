@@ -1,12 +1,22 @@
 ﻿namespace IdleKingdomsEditor.Models
 {
-    class MapTile
+    class MapTile : NotifyPropertyChangedViewModel
     {
         public int Row { get; set; }
         public int Col { get; set; }
         public TileType TileType { get; set; }
-        //public virtual string Text { get; set; }
-        public bool IsSelected { get; set; }
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+            }
+        }
+
         public override string ToString() => "";
     }
 }

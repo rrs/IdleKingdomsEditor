@@ -1,5 +1,6 @@
 ﻿using HexGridControl;
 using IdleKingdomsEditor.Models;
+using IdleKingdomsEditor.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace IdleKingdomsEditor
             }
             catch { }
 
-            var vm = new MainViewModel();
+            var vm = new MainViewModel(savedRoutes);
 
             var w = new MainWindow
             {

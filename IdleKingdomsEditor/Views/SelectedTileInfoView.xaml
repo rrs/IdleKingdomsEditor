@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="IdleKingdomsEditor.Views.SelectedTileInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IdleKingdomsEditor.Views"
+             mc:Ignorable="d">
+    <Border BorderThickness="1" BorderBrush="Gray" Width="120" Height="220" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <StackPanel Background="Snow">
+            <Label>Selected</Label>
+            <Separator/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label>Prestige</Label>
+                <Label Grid.Row="1">Food</Label>
+                <Label Grid.Row="2">Food Cart</Label>
+                <Label Grid.Row="3">Wood</Label>
+                <Label Grid.Row="4">Wood Cart</Label>
+                <Label Grid.Row="5">Science</Label>
+                <Label Grid.Row="6">All Carts</Label>
+                <TextBox Name="CurrentPrestige" Grid.Column="1"></TextBox>
+                <TextBox Name="CurrentFood" Grid.Column="1" Grid.Row="1"></TextBox>
+                <TextBox Name="CurrentFoodCart" Grid.Column="1" Grid.Row="2"></TextBox>
+                <TextBox Name="CurrentWood" Grid.Column="1" Grid.Row="3"></TextBox>
+                <TextBox Name="CurrentWoodCart" Grid.Column="1" Grid.Row="4"></TextBox>
+                <TextBox Name="CurrentScience" Grid.Column="1" Grid.Row="5"></TextBox>
+                <TextBox Name="CurrentAllCart" Grid.Column="1" Grid.Row="6"></TextBox>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

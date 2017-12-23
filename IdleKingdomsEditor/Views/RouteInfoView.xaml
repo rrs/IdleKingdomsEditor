@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="IdleKingdomsEditor.Views.RouteInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IdleKingdomsEditor.Views"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize"  Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="MinWidth" Value="30" />
+        </Style>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="2 0 2 0" />
+        </Style>
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal">
+        <StackPanel>
+            <DockPanel>
+                <Label>Selected</Label>
+                <TextBlock Text="{Binding SelectedTilesText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Forest</Label>
+                <TextBlock Text="{Binding SelectedForestsText}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label>Next Tile Cost</Label>
+                <TextBlock Text="{Binding NextTileCostText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Total Tile Cost</Label>
+                <TextBlock Text="{Binding TileCostTotalText}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label >Food Multiplier</Label>
+                <TextBlock Text="{Binding FoodMultiplierText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Food Cart Multiplier</Label>
+                <TextBlock Text="{Binding FoodCartMultiplierText}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label>Wood Multiplier</Label>
+                <TextBlock Text="{Binding WoodMultiplierText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Wood Cart Multiplier</Label>
+                <TextBlock Text="{Binding WoodCartMultiplierText}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label>Science Multiplier</Label>
+                <TextBlock Text="{Binding ScienceMultiplierText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Science Cart Multiplier</Label>
+                <TextBlock Text="{Binding ScienceCartMultiplierText}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label>Foraging Hut Multiplier</Label>
+                <TextBlock Text="{Binding ForagingHutMultiplierText}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label>Prestige Multiplier</Label>
+                <TextBlock Text="{Binding PrestigeMultiplierText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Prestige</Label>
+                <TextBlock Text="{Binding PrestigeTotalText}" />
+            </DockPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

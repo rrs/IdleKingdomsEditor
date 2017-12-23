@@ -36,14 +36,14 @@ namespace IdleKingdomsEditor
                     Col = cell.Col,
                     Row = cell.Row,
                     TileType = TileType.Shrine,
-                    PrestigeMultiplier = cell.PrestigeMultiplier,
-                    FoodMultiplier = cell.FoodMultiplier,
-                    FoodCartMultiplier = cell.FoodCartMultiplier,
-                    WoodMultiplier = cell.WoodMultiplier,
-                    WoodCartMultiplier = cell.WoodCartMultiplier,
-                    AllCartMultiplier = cell.AllCartMultiplier,
-                    ScienceMultiplier = cell.ScienceMultiplier,
-                    ForagingHutMultiplier = cell.ForagingHutMultiplier,
+                    PrestigeMultiplier = cell.PrestigeMultiplier > 0 ? cell.PrestigeMultiplier : 1,
+                    FoodMultiplier = cell.FoodMultiplier > 0 ? cell.FoodMultiplier : 1,
+                    FoodCartMultiplier = cell.FoodCartMultiplier > 0 ? cell.FoodCartMultiplier : 1,
+                    WoodMultiplier = cell.WoodMultiplier > 0 ? cell.WoodMultiplier : 1,
+                    WoodCartMultiplier = cell.WoodCartMultiplier > 0 ? cell.WoodCartMultiplier : 1,
+                    AllCartMultiplier = cell.AllCartMultiplier > 0 ? cell.AllCartMultiplier : 1,
+                    ScienceMultiplier = cell.ScienceMultiplier > 0 ? cell.ScienceMultiplier : 1,
+                    ForagingHutMultiplier = cell.ForagingHutMultiplier > 0 ? cell.ForagingHutMultiplier : 1,
                     Text = GenerateShrineText(cell)
                 };
             }

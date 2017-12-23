@@ -7,7 +7,7 @@ using System.Text;
 
 namespace IdleKingdomsEditor.ViewModels
 {
-    class InfoViewModel : INotifyPropertyChanged
+    class RouteInfoViewModel : NotifyPropertyChangedViewModel
     {
         public void UpdateInfo(IEnumerable<MapTile> selectedMapTiles)
         {
@@ -49,13 +49,13 @@ namespace IdleKingdomsEditor.ViewModels
                 }
             }
 
-            var tileCosts = TileCosts.Values(nSelected + 2);
+            var tileCosts = TileCostHelper.Values(nSelected + 2);
 
             var nextTileCost = tileCosts[tileCosts.Count - 1];
             var totalTileCost = tileCosts.Sum() - nextTileCost;
 
-            NextTileCostText = (nSelected + 1 < TileCosts.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(nextTileCost);
-            TileCostTotalText = (nSelected < TileCosts.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(totalTileCost);
+            NextTileCostText = (nSelected + 1 < TileCostHelper.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(nextTileCost);
+            TileCostTotalText = (nSelected < TileCostHelper.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(totalTileCost);
             SelectedTilesText = nSelected.ToString();
             SelectedForestsText = forests.ToString();
             PrestigeMultiplierText = NumberFormatter.FormatNumber(prestige);
@@ -224,10 +224,5 @@ namespace IdleKingdomsEditor.ViewModels
                 OnPropertyChanged(nameof(PrestigeTotalText));
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
     }
 }

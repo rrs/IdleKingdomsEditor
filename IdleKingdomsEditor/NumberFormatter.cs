@@ -17,7 +17,7 @@ namespace IdleKingdomsEditor
                 index++;
             }
 
-            return $"{n:###.##}{_numberSuffixes[index]}";
+            return $"{n:##0.##}{_numberSuffixes[index]}";
         }
 
         private static readonly string[] _numberSuffixes =
