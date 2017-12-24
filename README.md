@@ -6,7 +6,9 @@ Simple editor to play around with routes
 Releases
 --------
 
-See https://github.com/rrs/IdleKingdomsEditor/releases for build output from AppVeyor https://ci.appveyor.com/project/rrs/idlekingdomseditor
+See [releases](https://github.com/rrs/IdleKingdomsEditor/releases) section for latest build
+
+Built using AppVeyor https://ci.appveyor.com/project/rrs/idlekingdomseditor
 
 Thanks to https://github.com/AlexanderSharykin/HexGrid for the hex control repo i forked
 
