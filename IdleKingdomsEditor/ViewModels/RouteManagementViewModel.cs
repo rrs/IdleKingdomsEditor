@@ -105,6 +105,12 @@ namespace IdleKingdomsEditor.ViewModels
             if (savedRoutes.Any()) SelectedRoute = savedRoutes.First();
         }
 
+        public void UpdateCurrentSavedRoute()
+        {
+            if (SelectedRoute == null) return;
+            SelectedRoute.Cells = SelectedCells.ToList();
+        }
+
         private void SaveRoutes(object obj)
         {
             var json = JsonConvert.SerializeObject(SavedRoutes);

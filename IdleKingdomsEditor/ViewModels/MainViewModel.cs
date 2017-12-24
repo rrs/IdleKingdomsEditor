@@ -35,6 +35,7 @@ namespace IdleKingdomsEditor.ViewModels
         {
             RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected));
             SelectedTileInfoViewModel.ChangeSelectedInfo(Tiles[e.NewIndex]);
+            RouteManagementViewModel.UpdateCurrentSavedRoute();
         }
     }
 }
