@@ -3,7 +3,10 @@ IdleKingdomsEditor
 
 Simple editor to play around with routes
 
-build folder contains the build output of the IdleKingdomdsEditor project
+Releases
+--------
+
+See https://github.com/rrs/IdleKingdomsEditor/releases for build output from AppVeyor https://ci.appveyor.com/project/rrs/idlekingdomseditor
 
 Thanks to https://github.com/AlexanderSharykin/HexGrid for the hex control repo i forked
 
