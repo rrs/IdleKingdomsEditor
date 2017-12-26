@@ -8,9 +8,7 @@ Usage
 
 This editor is **windows only**
 
-Download the latest release from [here](https://github.com/rrs/IdleKingdomsEditor/releases) unzip it and run IdleKingdomsEditor.exe built using [AppVeyor](https://ci.appveyor.com/project/rrs/idlekingdomseditor)
-
-Thanks to https://github.com/AlexanderSharykin/HexGrid for the hex control repo i forked
+Download the latest release from [here](https://github.com/rrs/IdleKingdomsEditor/releases) unzip it and run IdleKingdomsEditor.exe, built using [AppVeyor](https://ci.appveyor.com/project/rrs/idlekingdomseditor)
 
 Please see the [wiki](https://github.com/rrs/IdleKingdomsEditor/wiki) for further help.
 
@@ -33,3 +31,7 @@ Selected Route
 --------------
 
 ![selected route map](Screenshots/selected.png)
+
+Thanks
+------
+Thanks to https://github.com/AlexanderSharykin/HexGrid for the hex control repo i forked
