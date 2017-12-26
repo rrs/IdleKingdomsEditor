@@ -3,14 +3,16 @@ IdleKingdomsEditor
 
 Simple editor to play around with routes
 
-Releases
---------
+Usage
+-----
 
-See [releases](https://github.com/rrs/IdleKingdomsEditor/releases) section for latest build
+This editor is **windows only**
 
-Built using AppVeyor https://ci.appveyor.com/project/rrs/idlekingdomseditor
+Download the latest release from [here](https://github.com/rrs/IdleKingdomsEditor/releases) unzip it and run IdleKingdomsEditor.exe built using [AppVeyor](https://ci.appveyor.com/project/rrs/idlekingdomseditor)
 
 Thanks to https://github.com/AlexanderSharykin/HexGrid for the hex control repo i forked
+
+Please see the [wiki](https://github.com/rrs/IdleKingdomsEditor/wiki) for further help.
 
 Controls
 --------
