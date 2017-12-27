@@ -25,12 +25,12 @@ The overlay shows what bonuses the last selected tiles has, if any
 Blank Map
 ---------
 
-![clear map](Screenshots/blank.png)
+![clear map](docs/images/blank.png)
 
 Selected Route
 --------------
 
-![selected route map](Screenshots/selected.png)
+![selected route map](docs/images/selected.png)
 
 Thanks
 ------
