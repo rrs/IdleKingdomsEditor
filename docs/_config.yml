@@ -2,3 +2,4 @@ theme: jekyll-theme-cayman
 title: Idle Kingdoms Editor
 description: A WPF route editor for Idle Kingdoms
 show_downloads: false
+show_latest_release: true
