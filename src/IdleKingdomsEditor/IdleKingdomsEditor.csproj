@@ -150,11 +150,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HexGridControl\HexGridControl.csproj">
+    <ProjectReference Include="..\lib\HexGrid\HexGridControl\HexGridControl.csproj">
       <Project>{942134ac-6ea2-4500-8f22-0f739b70a05f}</Project>
       <Name>HexGridControl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HexGridHelpers\HexGridHelpers.csproj">
+    <ProjectReference Include="..\lib\HexGrid\HexGridHelpers\HexGridHelpers.csproj">
       <Project>{e91eca7c-4deb-4a44-b695-fc5b9498a677}</Project>
       <Name>HexGridHelpers</Name>
     </ProjectReference>
