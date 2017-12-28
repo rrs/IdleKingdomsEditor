@@ -20,9 +20,9 @@ Download, unzip, run IdleKingdomsEditor.exe
 Blank Map
 ---------
 
-![clear map](docs/images/blank.png)
+![clear map](images/blank.png)
 
 Selected Route
 --------------
 
-![selected route map](docs/images/selected.png)
+![selected route map](images/selected.png)
