@@ -4,6 +4,13 @@ A simple route editor for Idle Kingdoms.
 
 This editor is **windows only**
 
+v0.4.8
+======
+
+**WITH THE LATEST VERSION MOST OF THIS STUFF IS NO LONGER USEFUL**
+
+I will update if i can make it useful again :)
+
 ### Usage 
 
 Download, unzip, run IdleKingdomsEditor.exe

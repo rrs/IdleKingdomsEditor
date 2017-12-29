@@ -23,10 +23,12 @@
                                     <Binding Path="Orientation" RelativeSource="{RelativeSource TemplatedParent}"/>
                                 </MultiBinding>
                             </Grid.Clip>
-
-                            <Grid Name="hexContent"                              
-                              Background="{TemplateBinding Background}"
-                              Margin="{TemplateBinding BorderThickness}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Grid
+                                Name="hexContent"
+                                Background="{TemplateBinding Background}"
+                                Margin="{TemplateBinding BorderThickness}"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch">
                                 <Grid.Clip>
                                     <MultiBinding Converter="{StaticResource ClipConverter}">
                                         <Binding Path="ActualWidth" ElementName="hexContent"/>
@@ -39,7 +41,7 @@
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     Margin="{TemplateBinding Padding}"
                                     Content="{TemplateBinding Content}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
                             </Grid>
                             <Grid Name="hexOverlay" Background="GhostWhite" Opacity="0">
                                 <Grid.Clip>

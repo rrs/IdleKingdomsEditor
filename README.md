@@ -3,6 +3,13 @@ IdleKingdomsEditor
 
 Simple editor to play around with routes
 
+v0.4.8
+======
+
+**WITH THE LATEST VERSION MOST OF THIS STUFF IS NO LONGER USEFUL**
+
+I will update if i can make it useful again :)
+
 Usage
 -----
 
