@@ -6,9 +6,9 @@ Simple editor to play around with routes
 v0.4.8
 ======
 
-**WITH THE LATEST VERSION MOST OF THIS STUFF IS NO LONGER USEFUL**
+With this update shrines have a chance to move 1 space. Grass has a chance to turn to forest and vice versa. So the routing is largely the same, depending on luck a given route could change in your favour or might work against you.
 
-I will update if i can make it useful again :)
+I will update the editor so you can easily edit the underlying map
 
 Usage
 -----
@@ -24,7 +24,7 @@ Controls
 
 * **\+** adds a new route the the list of managed routes, using current width, height, selected tiles and the given name.
 * **\-** removes the currently selected route from the list of managed routes
-* **Save** saves the managed routes to disk
+* **Save** saves the managed routes to disk, see [wiki](https://github.com/rrs/IdleKingdomsEditor/wiki/Saved-Rotues) for more info
 * **Clear** clears all nodes from the current route
 
 The overlay shows what bonuses the last selected tiles has, if any

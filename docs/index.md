@@ -4,12 +4,12 @@ A simple route editor for Idle Kingdoms.
 
 This editor is **windows only**
 
-v0.4.8
+v0.4.8.1
 ======
 
-**WITH THE LATEST VERSION MOST OF THIS STUFF IS NO LONGER USEFUL**
+With this update shrines have a chance to move 1 space. Grass has a chance to turn to forest and vice versa. So the routing is largely the same, depending on luck a given route could change in your favour or might work against you.
 
-I will update if i can make it useful again :)
+I will update the editor so you can easily edit the underlying map
 
 ### Usage 
 
