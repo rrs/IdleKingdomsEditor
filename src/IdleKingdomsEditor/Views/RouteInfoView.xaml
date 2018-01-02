@@ -82,5 +82,15 @@
                 <TextBlock Text="{Binding PrestigeTotalText}" />
             </DockPanel>
         </StackPanel>
+        <StackPanel>
+            <DockPanel>
+                <Label>Prestige Per Tile</Label>
+                <TextBlock Text="{Binding PrestigePerTileText}" />
+            </DockPanel>
+            <DockPanel>
+                <Label>Efficiency</Label>
+                <TextBlock Text="{Binding EfficiencyText}" />
+            </DockPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>

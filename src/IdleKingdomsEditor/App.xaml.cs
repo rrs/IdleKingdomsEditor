@@ -23,9 +23,17 @@ namespace IdleKingdomsEditor
             var savedRoutes = new SavedRoute[0];
             try
             {
+                var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var editorDir = Path.Combine(userDir, Constants.IdleKingdomsUserFolder);
+                var savedRoutesPath = Path.Combine(editorDir, Constants.SavedRoutesFileName);
+
                 if (File.Exists(Constants.SavedRoutesFilePath))
                 {
                     savedRoutes = JsonConvert.DeserializeObject<SavedRoute[]>(File.ReadAllText(Constants.SavedRoutesFilePath));
+                }
+                else if (File.Exists(savedRoutesPath))
+                {
+                    savedRoutes = JsonConvert.DeserializeObject<SavedRoute[]>(File.ReadAllText(savedRoutesPath));
                 }
             }
             catch { }

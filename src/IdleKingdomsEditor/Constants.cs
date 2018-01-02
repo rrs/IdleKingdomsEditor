@@ -9,5 +9,6 @@ namespace IdleKingdomsEditor
     {
         public const string SavedRoutesFileName = "savedroutes.txt";
         public const string SavedRoutesFilePath = "./" + SavedRoutesFileName;
+        public const string IdleKingdomsUserFolder = "IdleKingdomsEditor";
     }
 }

@@ -11,10 +11,13 @@ namespace IdleKingdomsEditor
         {
             int index = 0;
 
-            while (n > 1000)
+            if (!double.IsPositiveInfinity(n))
             {
-                n /= 1000;
-                index++;
+                while (n > 1000)
+                {
+                    n /= 1000;
+                    index++;
+                }
             }
 
             return $"{n:##0.##}{_numberSuffixes[index]}";

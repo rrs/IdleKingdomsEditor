@@ -54,12 +54,14 @@ namespace IdleKingdomsEditor.ViewModels
             var nextTileCost = tileCosts[tileCosts.Count - 1];
             var totalTileCost = tileCosts.Sum() - nextTileCost;
 
+            var prestigeOnReset = nSelected - 9 > 0 ? (nSelected - 9) * prestige : 0;
+
             NextTileCostText = (nSelected + 1 < TileCostHelper.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(nextTileCost);
             TileCostTotalText = (nSelected < TileCostHelper.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(totalTileCost);
             SelectedTilesText = nSelected.ToString();
             SelectedForestsText = forests.ToString();
             PrestigeMultiplierText = NumberFormatter.FormatNumber(prestige);
-            PrestigeTotalText = NumberFormatter.FormatNumber(nSelected - 9 > 0 ? (nSelected - 9) * prestige : 0);
+            PrestigeTotalText = NumberFormatter.FormatNumber(prestigeOnReset);
             FoodMultiplierText = NumberFormatter.FormatNumber(food);
             FoodCartMultiplierText = NumberFormatter.FormatNumber(foodCart);
             WoodMultiplierText = NumberFormatter.FormatNumber(wood);
@@ -67,6 +69,15 @@ namespace IdleKingdomsEditor.ViewModels
             ScienceMultiplierText = NumberFormatter.FormatNumber(science);
             ScienceCartMultiplierText = NumberFormatter.FormatNumber(scienceCart);
             ForagingHutMultiplierText = NumberFormatter.FormatNumber(foragingHuts);
+
+            var prestigePerTile = prestigeOnReset / nSelected;
+            PrestigePerTileText = NumberFormatter.FormatNumber(prestigePerTile);
+
+            var foodTime = totalTileCost / Math.Min(food, foodCart);
+            var foodPerPrestige = foodTime / prestigeOnReset;
+            var foodPerPrestigePerTile = (foodPerPrestige / nSelected);
+            var efficiency = (prestigePerTile / foodPerPrestigePerTile);
+            EfficiencyText = $"{efficiency:n}";
         }
 
         private string _selectedTilesText = "0";
@@ -222,6 +233,30 @@ namespace IdleKingdomsEditor.ViewModels
             {
                 _prestigeTotalText = value;
                 OnPropertyChanged(nameof(PrestigeTotalText));
+            }
+        }
+
+        private string _prestigePerTileText = "0";
+
+        public string PrestigePerTileText
+        {
+            get => _prestigePerTileText;
+            set
+            {
+                _prestigePerTileText = value;
+                OnPropertyChanged(nameof(PrestigePerTileText));
+            }
+        }
+
+        private string _efficiencyText = "0";
+
+        public string EfficiencyText
+        {
+            get => _efficiencyText;
+            set
+            {
+                _efficiencyText = value;
+                OnPropertyChanged(nameof(EfficiencyText));
             }
         }
     }

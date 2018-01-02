@@ -29,12 +29,18 @@ namespace IdleKingdomsEditor.ViewModels
             Tiles = new BindingList<MapTile>(_hexMap.Tiles.SelectMany(row => row.Where(col => col != null)).ToList());
             RouteManagementViewModel = new RouteManagementViewModel(Tiles, savedRoutes);
             Tiles.ListChanged += Tiles_ListChanged;
+            UpdateRoute(0);
         }
 
         private void Tiles_ListChanged(object sender, ListChangedEventArgs e)
         {
+            UpdateRoute(e.NewIndex);
+        }
+
+        private void UpdateRoute(int newIndex)
+        {
             RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected));
-            SelectedTileInfoViewModel.ChangeSelectedInfo(Tiles[e.NewIndex]);
+            SelectedTileInfoViewModel.ChangeSelectedInfo(Tiles[newIndex]);
             RouteManagementViewModel.UpdateCurrentSavedRoute();
         }
     }

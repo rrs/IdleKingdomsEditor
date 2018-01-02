@@ -113,8 +113,23 @@ namespace IdleKingdomsEditor.ViewModels
 
         private void SaveRoutes(object obj)
         {
-            var json = JsonConvert.SerializeObject(SavedRoutes);
-            File.WriteAllText(Constants.SavedRoutesFilePath, json);
+            if (File.Exists(Constants.SavedRoutesFilePath))
+            {
+                var json = JsonConvert.SerializeObject(SavedRoutes);
+                File.WriteAllText(Constants.SavedRoutesFilePath, json);
+            }
+            else
+            {
+                var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var editorDir = Path.Combine(userDir, Constants.IdleKingdomsUserFolder);
+                var savedRoutesPath = Path.Combine(editorDir, Constants.SavedRoutesFileName);
+
+                if (!Directory.Exists(editorDir)) Directory.CreateDirectory(editorDir);
+
+                var json = JsonConvert.SerializeObject(SavedRoutes);
+                File.WriteAllText(savedRoutesPath, json);
+            }
+
         }
 
         private void ClearRoute(object obj)
