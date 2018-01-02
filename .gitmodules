@@ -1,3 +1,3 @@
 [submodule "src/lib/HexGrid"]
 	path = src/lib/HexGrid
-	url = git@github.com:rrs/HexGrid.git
+	url = https://github.com/rrs/HexGrid.git
