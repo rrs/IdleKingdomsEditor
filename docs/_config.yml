@@ -1,6 +1,6 @@
 theme: jekyll-theme-cayman
 title: Idle Kingdoms Editor
-description: A WPF route editor for Idle Kingdoms
+description: A WPF route editor for Idle Kingdom Clicker
 logo: https://github.com/rrs/rrs.github.io/blob/master/images/rrslogo.png
 show_downloads: false
 show_latest_release: true

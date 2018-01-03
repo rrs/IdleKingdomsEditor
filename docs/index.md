@@ -1,6 +1,6 @@
 ## Idle Kingdoms Editor
 
-A simple route editor for Idle Kingdoms.
+A simple route editor for Idle Kingdom Clicker.
 
 This editor is **windows only**
 
