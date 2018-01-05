@@ -20,7 +20,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" LastChildFill="False">
             <views:RouteManagementView DataContext="{Binding RouteManagementViewModel}" />
-            <views:RouteInfoView DataContext="{Binding RouteInfoViewModel}" DockPanel.Dock="Right" />
+            <views:RouteInfoView DataContext="{Binding RouteInfoViewModel}" DockPanel.Dock="Right" VerticalAlignment="Center" />
         </DockPanel>
         <Grid>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

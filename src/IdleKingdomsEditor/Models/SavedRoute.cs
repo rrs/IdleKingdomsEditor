@@ -9,5 +9,6 @@ namespace IdleKingdomsEditor.Models
         public List<HexCell> Cells { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
+        public string AverageFoodPerSecondText { get; set; }
     }
 }

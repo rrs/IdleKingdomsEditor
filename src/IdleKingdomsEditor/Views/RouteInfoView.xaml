@@ -14,8 +14,12 @@
         <Style TargetType="StackPanel">
             <Setter Property="Margin" Value="2 0 2 0" />
         </Style>
+        <Style TargetType="Label">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
+    <WrapPanel>
+        
         <StackPanel>
             <DockPanel>
                 <Label>Selected</Label>
@@ -38,43 +42,43 @@
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <Label >Food Multiplier</Label>
+                <Label >Food x</Label>
                 <TextBlock Text="{Binding FoodMultiplierText}" />
             </DockPanel>
             <DockPanel>
-                <Label>Food Cart Multiplier</Label>
+                <Label>Food Cart x</Label>
                 <TextBlock Text="{Binding FoodCartMultiplierText}" />
             </DockPanel>
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <Label>Wood Multiplier</Label>
+                <Label>Wood x</Label>
                 <TextBlock Text="{Binding WoodMultiplierText}" />
             </DockPanel>
             <DockPanel>
-                <Label>Wood Cart Multiplier</Label>
+                <Label>Wood Cart x</Label>
                 <TextBlock Text="{Binding WoodCartMultiplierText}" />
             </DockPanel>
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <Label>Science Multiplier</Label>
+                <Label>Science x</Label>
                 <TextBlock Text="{Binding ScienceMultiplierText}" />
             </DockPanel>
             <DockPanel>
-                <Label>Science Cart Multiplier</Label>
+                <Label>Science Cart x</Label>
                 <TextBlock Text="{Binding ScienceCartMultiplierText}" />
             </DockPanel>
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <Label>Foraging Hut Multiplier</Label>
+                <Label>Foraging Hut x</Label>
                 <TextBlock Text="{Binding ForagingHutMultiplierText}" />
             </DockPanel>
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <Label>Prestige Multiplier</Label>
+                <Label>Prestige x</Label>
                 <TextBlock Text="{Binding PrestigeMultiplierText}" />
             </DockPanel>
             <DockPanel>
@@ -84,13 +88,13 @@
         </StackPanel>
         <StackPanel>
             <DockPanel>
-                <Label>Prestige Per Tile</Label>
-                <TextBlock Text="{Binding PrestigePerTileText}" />
+                <Label>Estimated Time</Label>
+                <TextBlock Text="{Binding EstimatedTimeText}" />
             </DockPanel>
             <DockPanel>
-                <Label>Efficiency</Label>
-                <TextBlock Text="{Binding EfficiencyText}" />
+                <Label>Prestige/s</Label>
+                <TextBlock Text="{Binding PrestigePerSecondText}" />
             </DockPanel>
         </StackPanel>
-    </StackPanel>
+    </WrapPanel>
 </UserControl>

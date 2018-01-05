@@ -9,7 +9,7 @@ namespace IdleKingdomsEditor.ViewModels
 {
     class RouteInfoViewModel : NotifyPropertyChangedViewModel
     {
-        public void UpdateInfo(IEnumerable<MapTile> selectedMapTiles)
+        public void UpdateInfo(IEnumerable<MapTile> selectedMapTiles, string averageFoodPerSecondText)
         {
             int nSelected = 0;
             int forests = 0;
@@ -70,14 +70,30 @@ namespace IdleKingdomsEditor.ViewModels
             ScienceCartMultiplierText = NumberFormatter.FormatNumber(scienceCart);
             ForagingHutMultiplierText = NumberFormatter.FormatNumber(foragingHuts);
 
-            var prestigePerTile = prestigeOnReset / nSelected;
-            PrestigePerTileText = NumberFormatter.FormatNumber(prestigePerTile);
+            var averageFoodPerSecond = NumberFormatter.UnformatNumber(averageFoodPerSecondText);
 
-            var foodTime = totalTileCost / Math.Min(food, foodCart);
-            var foodPerPrestige = foodTime / prestigeOnReset;
-            var foodPerPrestigePerTile = (foodPerPrestige / nSelected);
-            var efficiency = (prestigePerTile / foodPerPrestigePerTile);
-            EfficiencyText = $"{efficiency:n}";
+            var estimateTimeInSeconds = (totalTileCost / averageFoodPerSecond) / 2; // divide by 2 assumed always double production
+
+
+            if (estimateTimeInSeconds > 3153600000)
+            {
+                EstimatedTimeText = "\u221E"; // infinity
+                PrestigePerSecondText = $"0";
+            }
+            else
+            {
+                var estimateTimeSpan = TimeSpan.FromSeconds(estimateTimeInSeconds);
+                var hoursMinutesString = $"{estimateTimeSpan:hh\\:mm}";
+
+                EstimatedTimeText = estimateTimeSpan.Days > 0 
+                    ? $"{estimateTimeSpan.Days}:{hoursMinutesString} Days" 
+                    : $"{hoursMinutesString} Hours";
+
+                var prestigePerSecond = prestigeOnReset / estimateTimeInSeconds;
+                PrestigePerSecondText = NumberFormatter.FormatNumber(prestigePerSecond);
+            }
+
+            
         }
 
         private string _selectedTilesText = "0";
@@ -236,27 +252,27 @@ namespace IdleKingdomsEditor.ViewModels
             }
         }
 
-        private string _prestigePerTileText = "0";
+        private string _prestigePerSecondText = "0";
 
-        public string PrestigePerTileText
+        public string PrestigePerSecondText
         {
-            get => _prestigePerTileText;
+            get => _prestigePerSecondText;
             set
             {
-                _prestigePerTileText = value;
-                OnPropertyChanged(nameof(PrestigePerTileText));
+                _prestigePerSecondText = value;
+                OnPropertyChanged(nameof(PrestigePerSecondText));
             }
         }
 
-        private string _efficiencyText = "0";
+        private string _estimatedTimeText = "0";
 
-        public string EfficiencyText
+        public string EstimatedTimeText
         {
-            get => _efficiencyText;
+            get => _estimatedTimeText;
             set
             {
-                _efficiencyText = value;
-                OnPropertyChanged(nameof(EfficiencyText));
+                _estimatedTimeText = value;
+                OnPropertyChanged(nameof(EstimatedTimeText));
             }
         }
     }

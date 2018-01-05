@@ -13,6 +13,7 @@ namespace IdleKingdomsEditor.ViewModels
     /// </summary>
     class MainViewModel : NotifyPropertyChangedViewModel
     {
+
         public RouteInfoViewModel RouteInfoViewModel { get; } = new RouteInfoViewModel();
         public SelectedTileInfoViewModel SelectedTileInfoViewModel { get; } = new SelectedTileInfoViewModel();
         public RouteManagementViewModel RouteManagementViewModel { get; private set; }
@@ -28,8 +29,15 @@ namespace IdleKingdomsEditor.ViewModels
             _hexMap = MapHelper.Generate(19);
             Tiles = new BindingList<MapTile>(_hexMap.Tiles.SelectMany(row => row.Where(col => col != null)).ToList());
             RouteManagementViewModel = new RouteManagementViewModel(Tiles, savedRoutes);
+            RouteManagementViewModel.AverageFoodPerSecondChanged += RouteManagementViewModel_AverageFoodPerSecondChanged;
             Tiles.ListChanged += Tiles_ListChanged;
             UpdateRoute(0);
+        }
+
+        private void RouteManagementViewModel_AverageFoodPerSecondChanged()
+        {
+            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected), RouteManagementViewModel.AverageFoodPerSecondText);
+
         }
 
         private void Tiles_ListChanged(object sender, ListChangedEventArgs e)
@@ -39,7 +47,7 @@ namespace IdleKingdomsEditor.ViewModels
 
         private void UpdateRoute(int newIndex)
         {
-            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected));
+            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected), RouteManagementViewModel.AverageFoodPerSecondText);
             SelectedTileInfoViewModel.ChangeSelectedInfo(Tiles[newIndex]);
             RouteManagementViewModel.UpdateCurrentSavedRoute();
         }

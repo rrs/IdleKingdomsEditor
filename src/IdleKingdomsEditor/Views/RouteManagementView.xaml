@@ -5,35 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:IdleKingdomsEditor.Views"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <Style TargetType="Label">
-            <Setter Property="Width" Value="50" />
-        </Style>
-    </UserControl.Resources>
-    <StackPanel Orientation="Horizontal">
-        <StackPanel>
-            <DockPanel>
-                <Label>Width</Label>
-                <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
-            </DockPanel>
-            <DockPanel>
-                <Label>Height</Label>
-                <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
-            </DockPanel>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <DockPanel>
+                    <Label>Width</Label>
+                    <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
+                </DockPanel>
+                <DockPanel>
+                    <Label>Height</Label>
+                    <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Width="80" HorizontalAlignment="Right" VerticalContentAlignment="Center" />
+                </DockPanel>
+            </StackPanel>
+            <StackPanel>
+                <DockPanel>
+                    <Label>Name</Label>
+                    <TextBox Text="{Binding NewRouteName, UpdateSourceTrigger=PropertyChanged}" Width="200"></TextBox>
+                    <Button Command="{Binding NewRouteCommand}" Width="20">+</Button>
+                </DockPanel>
+                <DockPanel>
+                    <Button Command="{Binding DeleteRouteCommand}" Width="20" DockPanel.Dock="Right">-</Button>
+                    <Label>Route</Label>
+                    <ComboBox DisplayMemberPath="Name" SelectedItem="{Binding SelectedRoute}" ItemsSource="{Binding SavedRoutes}" Width="200" />
+                </DockPanel>
+            </StackPanel>
+            <StackPanel>
+                <DockPanel>
+                    <Label>Average Food/s</Label>
+                    <TextBox Text="{Binding AverageFoodPerSecondText, UpdateSourceTrigger=PropertyChanged}" Width="80" />
+                </DockPanel>
+            </StackPanel>
         </StackPanel>
-        <StackPanel>
-            <DockPanel>
-                <Label>Name</Label>
-                <TextBox Text="{Binding NewRouteName, UpdateSourceTrigger=PropertyChanged}" Width="200"></TextBox>
-                <Button Command="{Binding NewRouteCommand}" Width="20">+</Button>
-            </DockPanel>
-            <DockPanel>
-                <Button Command="{Binding DeleteRouteCommand}" Width="20" DockPanel.Dock="Right">-</Button>
-                <Label>Route</Label>
-                <ComboBox DisplayMemberPath="Name" SelectedItem="{Binding SelectedRoute}" ItemsSource="{Binding SavedRoutes}" />
-            </DockPanel>
-        </StackPanel>
-        <Button Command="{Binding SaveRoutesCommand}" Width="100" Margin="1" >Save</Button>
-        <Button Command="{Binding ClearRouteCommand}" Width="100" Margin="1">Clear</Button>
+        <UniformGrid Rows="1">
+            <Button Command="{Binding SaveRoutesCommand}" Margin="1">Save</Button>
+            <Button Command="{Binding ClearRouteCommand}" Margin="1">Clear</Button>
+        </UniformGrid>
     </StackPanel>
+    
 </UserControl>

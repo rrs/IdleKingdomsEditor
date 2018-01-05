@@ -15,6 +15,8 @@ namespace IdleKingdomsEditor.ViewModels
     {
         private readonly IList<MapTile> _mapTiles;
 
+        public event Action AverageFoodPerSecondChanged;
+
         private double _width = 900;
 
         public double Width
@@ -38,6 +40,20 @@ namespace IdleKingdomsEditor.ViewModels
                 _height = value;
                 OnPropertyChanged(nameof(Height));
                 if (SelectedRoute != null) SelectedRoute.Height = value;
+            }
+        }
+
+        private string _averageFoodPerSecondText = "0";
+
+        public string AverageFoodPerSecondText
+        {
+            get => _averageFoodPerSecondText;
+            set
+            {
+                _averageFoodPerSecondText = value;
+                OnPropertyChanged(nameof(AverageFoodPerSecondText));
+                if (SelectedRoute != null) SelectedRoute.AverageFoodPerSecondText = value;
+                AverageFoodPerSecondChanged?.Invoke();
             }
         }
 
@@ -74,6 +90,7 @@ namespace IdleKingdomsEditor.ViewModels
 
             Height = SelectedRoute.Height;
             Width = SelectedRoute.Width;
+            AverageFoodPerSecondText = SelectedRoute.AverageFoodPerSecondText;
 
             var tilesToSelect = from hexItem in _mapTiles
                            join hexCell in SelectedRoute.Cells on new { hexItem.Row, hexItem.Col } equals new { hexCell.Row, hexCell.Col }
