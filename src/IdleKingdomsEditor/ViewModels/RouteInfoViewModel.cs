@@ -75,7 +75,7 @@ namespace IdleKingdomsEditor.ViewModels
             var estimateTimeInSeconds = (totalTileCost / averageFoodPerSecond) / 2; // divide by 2 assumed always double production
 
 
-            if (estimateTimeInSeconds > 3153600000)
+            if (double.IsNaN(estimateTimeInSeconds) || estimateTimeInSeconds > 3153600000)
             {
                 EstimatedTimeText = "\u221E"; // infinity
                 PrestigePerSecondText = $"0";
