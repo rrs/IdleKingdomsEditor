@@ -2,6 +2,7 @@
 using IdleKingdomsEditor.Models;
 using IdleKingdomsEditor.ViewModels;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,11 +19,13 @@ namespace IdleKingdomsEditor
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private void Application_Startup(object sender, StartupEventArgs _)
         {
-            var savedRoutes = new SavedRoute[0];
             try
             {
+                var savedRoutes = new SavedRoute[0];
                 var userDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 var editorDir = Path.Combine(userDir, Constants.IdleKingdomsUserFolder);
                 var savedRoutesPath = Path.Combine(editorDir, Constants.SavedRoutesFileName);
@@ -35,17 +38,22 @@ namespace IdleKingdomsEditor
                 {
                     savedRoutes = JsonConvert.DeserializeObject<SavedRoute[]>(File.ReadAllText(savedRoutesPath));
                 }
+
+                var vm = new MainViewModel(savedRoutes);
+
+                var w = new MainWindow
+                {
+                    DataContext = vm
+                };
+
+                w.ShowDialog();
             }
-            catch { }
-
-            var vm = new MainViewModel(savedRoutes);
-
-            var w = new MainWindow
+            catch(Exception e)
             {
-                DataContext = vm
-            };
-
-            w.ShowDialog();
+                Logger.Error(e);
+                MessageBox.Show(e.ToString());
+            }
+            
         }
     }
 }
