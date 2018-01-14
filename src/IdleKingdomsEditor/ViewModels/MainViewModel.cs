@@ -36,7 +36,7 @@ namespace IdleKingdomsEditor.ViewModels
 
         private void RouteManagementViewModel_AverageFoodPerSecondChanged()
         {
-            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected), RouteManagementViewModel.AverageFoodPerSecondText);
+            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected), RouteManagementViewModel);
 
         }
 
@@ -47,7 +47,7 @@ namespace IdleKingdomsEditor.ViewModels
 
         private void UpdateRoute(int newIndex)
         {
-            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected), RouteManagementViewModel.AverageFoodPerSecondText);
+            RouteInfoViewModel.UpdateInfo(Tiles.Where(o => o.IsSelected), RouteManagementViewModel);
             SelectedTileInfoViewModel.ChangeSelectedInfo(Tiles[newIndex]);
             RouteManagementViewModel.UpdateCurrentSavedRoute();
         }

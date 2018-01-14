@@ -9,7 +9,9 @@ namespace IdleKingdomsEditor.ViewModels
 {
     class RouteInfoViewModel : NotifyPropertyChangedViewModel
     {
-        public void UpdateInfo(IEnumerable<MapTile> selectedMapTiles, string averageFoodPerSecondText)
+        private double _previousLowestFoodMultiplier;
+
+        public void UpdateInfo(IEnumerable<MapTile> selectedMapTiles, RouteManagementViewModel rmVm)
         {
             int nSelected = 0;
             int forests = 0;
@@ -70,10 +72,10 @@ namespace IdleKingdomsEditor.ViewModels
             ScienceCartMultiplierText = NumberFormatter.FormatNumber(scienceCart);
             ForagingHutMultiplierText = NumberFormatter.FormatNumber(foragingHuts);
 
-            var averageFoodPerSecond = NumberFormatter.UnformatNumber(averageFoodPerSecondText);
+            var averageFoodPerSecond = NumberFormatter.UnformatNumber(rmVm.AverageFoodPerSecondText);
+
 
             var estimateTimeInSeconds = (totalTileCost / averageFoodPerSecond) / 2; // divide by 2 assumed always double production
-
 
             if (double.IsNaN(estimateTimeInSeconds) || estimateTimeInSeconds > 3153600000)
             {
@@ -91,6 +93,13 @@ namespace IdleKingdomsEditor.ViewModels
 
                 var prestigePerSecond = prestigeOnReset / estimateTimeInSeconds;
                 PrestigePerSecondText = NumberFormatter.FormatNumber(prestigePerSecond);
+            }
+
+            if (Math.Min(food, foodCart) != _previousLowestFoodMultiplier)
+            {
+                averageFoodPerSecond *= Math.Min(food, foodCart) / _previousLowestFoodMultiplier;
+                _previousLowestFoodMultiplier = Math.Min(food, foodCart);
+                rmVm.AverageFoodPerSecondText = NumberFormatter.FormatNumber(averageFoodPerSecond);
             }
 
             
