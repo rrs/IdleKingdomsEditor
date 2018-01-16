@@ -85,11 +85,19 @@ namespace IdleKingdomsEditor.ViewModels
             else
             {
                 var estimateTimeSpan = TimeSpan.FromSeconds(estimateTimeInSeconds);
-                var hoursMinutesString = $"{estimateTimeSpan:hh\\:mm}";
 
-                EstimatedTimeText = estimateTimeSpan.Days > 0 
-                    ? $"{estimateTimeSpan.Days}:{hoursMinutesString} Days" 
-                    : $"{hoursMinutesString} Hours";
+                if (estimateTimeSpan.Days > 0)
+                {
+                    EstimatedTimeText = $"{estimateTimeSpan.Days}:{estimateTimeSpan:hh\\:mm} Days";
+                }
+                else if (estimateTimeSpan.Hours > 0)
+                {
+                    EstimatedTimeText = $"{estimateTimeSpan:hh\\:mm} Hours";
+                }
+                else
+                {
+                    EstimatedTimeText = $"{estimateTimeSpan:mm\\:ss} Mins";
+                }
 
                 var prestigePerSecond = prestigeOnReset / estimateTimeInSeconds;
                 PrestigePerSecondText = NumberFormatter.FormatNumber(prestigePerSecond);
