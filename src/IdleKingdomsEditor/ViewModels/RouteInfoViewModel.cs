@@ -15,7 +15,7 @@ namespace IdleKingdomsEditor.ViewModels
         {
             int nSelected = 0;
             int forests = 0;
-            double prestige = 1;
+            //double prestige = 1;
             double food = 1;
             double foodCart = 1;
             double wood = 1;
@@ -34,13 +34,13 @@ namespace IdleKingdomsEditor.ViewModels
 
                 if (shrine == null) continue;
 
-                prestige *= shrine.PrestigeMultiplier;
+                //prestige *= shrine.PrestigeMultiplier;
                 food *= shrine.FoodMultiplier;
                 foodCart *= shrine.FoodCartMultiplier;
                 wood *= shrine.WoodMultiplier;
                 woodCart *= shrine.WoodCartMultiplier;
                 science *= shrine.ScienceMultiplier;
-                foragingHuts *= shrine.ForagingHutMultiplier;
+                foragingHuts *= shrine.FoodMultiplier * shrine.ForagingHutMultiplier;
 
                 var aMultiplier = shrine.AllCartMultiplier;
                 if (aMultiplier > 1)
@@ -56,14 +56,14 @@ namespace IdleKingdomsEditor.ViewModels
             var nextTileCost = tileCosts[tileCosts.Count - 1];
             var totalTileCost = tileCosts.Sum() - nextTileCost;
 
-            var prestigeOnReset = nSelected - 9 > 0 ? (nSelected - 9) * prestige : 0;
+            //var prestigeOnReset = nSelected - 9 > 0 ? (nSelected - 9) * prestige : 0;
 
             NextTileCostText = (nSelected + 1 < TileCostHelper.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(nextTileCost);
             TileCostTotalText = (nSelected < TileCostHelper.KnownValues.Length ? "" : "~") + NumberFormatter.FormatNumber(totalTileCost);
             SelectedTilesText = nSelected.ToString();
             SelectedForestsText = forests.ToString();
-            PrestigeMultiplierText = NumberFormatter.FormatNumber(prestige);
-            PrestigeTotalText = NumberFormatter.FormatNumber(prestigeOnReset);
+            //PrestigeMultiplierText = NumberFormatter.FormatNumber(prestige);
+            //PrestigeTotalText = NumberFormatter.FormatNumber(prestigeOnReset);
             FoodMultiplierText = NumberFormatter.FormatNumber(food);
             FoodCartMultiplierText = NumberFormatter.FormatNumber(foodCart);
             WoodMultiplierText = NumberFormatter.FormatNumber(wood);
@@ -72,43 +72,43 @@ namespace IdleKingdomsEditor.ViewModels
             ScienceCartMultiplierText = NumberFormatter.FormatNumber(scienceCart);
             ForagingHutMultiplierText = NumberFormatter.FormatNumber(foragingHuts);
 
-            var averageFoodPerSecond = NumberFormatter.UnformatNumber(rmVm.AverageFoodPerSecondText);
+            //var averageFoodPerSecond = NumberFormatter.UnformatNumber(rmVm.AverageFoodPerSecondText);
 
 
-            var estimateTimeInSeconds = (totalTileCost / averageFoodPerSecond) / 2; // divide by 2 assumed always double production
+            //var estimateTimeInSeconds = (totalTileCost / averageFoodPerSecond) / 2; // divide by 2 assumed always double production
 
-            if (double.IsNaN(estimateTimeInSeconds) || estimateTimeInSeconds > 3153600000)
-            {
-                EstimatedTimeText = "\u221E"; // infinity
-                PrestigePerSecondText = $"0";
-            }
-            else
-            {
-                var estimateTimeSpan = TimeSpan.FromSeconds(estimateTimeInSeconds);
+            //if (double.IsNaN(estimateTimeInSeconds) || estimateTimeInSeconds > 3153600000)
+            //{
+            //    EstimatedTimeText = "\u221E"; // infinity
+            //    PrestigePerSecondText = $"0";
+            //}
+            //else
+            //{
+            //    var estimateTimeSpan = TimeSpan.FromSeconds(estimateTimeInSeconds);
 
-                if (estimateTimeSpan.Days > 0)
-                {
-                    EstimatedTimeText = $"{estimateTimeSpan.Days}:{estimateTimeSpan:hh\\:mm} Days";
-                }
-                else if (estimateTimeSpan.Hours > 0)
-                {
-                    EstimatedTimeText = $"{estimateTimeSpan:hh\\:mm} Hours";
-                }
-                else
-                {
-                    EstimatedTimeText = $"{estimateTimeSpan:mm\\:ss} Mins";
-                }
+            //    if (estimateTimeSpan.Days > 0)
+            //    {
+            //        EstimatedTimeText = $"{estimateTimeSpan.Days}:{estimateTimeSpan:hh\\:mm} Days";
+            //    }
+            //    else if (estimateTimeSpan.Hours > 0)
+            //    {
+            //        EstimatedTimeText = $"{estimateTimeSpan:hh\\:mm} Hours";
+            //    }
+            //    else
+            //    {
+            //        EstimatedTimeText = $"{estimateTimeSpan:mm\\:ss} Mins";
+            //    }
 
-                var prestigePerSecond = prestigeOnReset / estimateTimeInSeconds;
-                PrestigePerSecondText = NumberFormatter.FormatNumber(prestigePerSecond);
-            }
+            //    //var prestigePerSecond = prestigeOnReset / estimateTimeInSeconds;
+            //    //PrestigePerSecondText = NumberFormatter.FormatNumber(prestigePerSecond);
+            //}
 
-            if (Math.Min(food, foodCart) != _previousLowestFoodMultiplier)
-            {
-                averageFoodPerSecond *= Math.Min(food, foodCart) / _previousLowestFoodMultiplier;
-                _previousLowestFoodMultiplier = Math.Min(food, foodCart);
-                rmVm.AverageFoodPerSecondText = NumberFormatter.FormatNumber(averageFoodPerSecond);
-            }
+            //if (Math.Min(food, foodCart) != _previousLowestFoodMultiplier)
+            //{
+            //    averageFoodPerSecond *= Math.Min(food, foodCart) / _previousLowestFoodMultiplier;
+            //    _previousLowestFoodMultiplier = Math.Min(food, foodCart);
+            //    rmVm.AverageFoodPerSecondText = NumberFormatter.FormatNumber(averageFoodPerSecond);
+            //}
 
             
         }

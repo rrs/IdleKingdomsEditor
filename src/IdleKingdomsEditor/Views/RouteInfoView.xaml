@@ -76,7 +76,7 @@
                 <TextBlock Text="{Binding ForagingHutMultiplierText}" />
             </DockPanel>
         </StackPanel>
-        <StackPanel>
+        <!--<StackPanel>
             <DockPanel>
                 <Label>Prestige x</Label>
                 <TextBlock Text="{Binding PrestigeMultiplierText}" />
@@ -85,16 +85,6 @@
                 <Label>Prestige</Label>
                 <TextBlock Text="{Binding PrestigeTotalText}" />
             </DockPanel>
-        </StackPanel>
-        <StackPanel>
-            <DockPanel>
-                <Label>Estimated Time</Label>
-                <TextBlock Text="{Binding EstimatedTimeText}" />
-            </DockPanel>
-            <DockPanel>
-                <Label>Prestige/s</Label>
-                <TextBlock Text="{Binding PrestigePerSecondText}" />
-            </DockPanel>
-        </StackPanel>
+        </StackPanel>-->
     </WrapPanel>
 </UserControl>
